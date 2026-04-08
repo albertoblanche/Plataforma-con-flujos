@@ -40,28 +40,32 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:va
 
 .hero{
   background:var(--dark);
-  padding:60px 72px 56px;
-  display:flex;flex-direction:column;gap:16px;
-  position:relative;overflow:hidden;
+  padding:48px 72px 48px;
+  display:flex;flex-direction:column;gap:14px;
+  position:relative;overflow:visible;
+  flex-shrink:0;
 }
 .hero::before{
   content:"";position:absolute;right:-80px;top:-80px;
   width:420px;height:420px;border-radius:50%;
   background:rgba(255,255,255,0.04);
+  pointer-events:none;z-index:0;
 }
 .hero::after{
   content:"";position:absolute;right:120px;bottom:-120px;
   width:280px;height:280px;border-radius:50%;
   background:rgba(255,255,255,0.025);
+  pointer-events:none;z-index:0;
 }
+.hero>*{position:relative;z-index:1}
 .hero-ey{
   font-size:11px;letter-spacing:0.22em;text-transform:uppercase;
   color:var(--gold);font-weight:500;
 }
 .hero-t{
   font-family:'Playfair Display',serif;
-  font-size:58px;line-height:1.02;color:var(--cream);font-weight:400;
-  max-width:640px;
+  font-size:48px;line-height:1.08;color:var(--cream);font-weight:400;
+  max-width:620px;
 }
 .hero-t em{color:var(--gold);font-style:italic}
 .hero-s{
@@ -79,7 +83,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:va
 .chip::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold)}
 
 /* MAIN CARDS */
-.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:40px 72px}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:28px 72px}
 .mc{
   border-radius:16px;border:1.5px solid var(--border);
   cursor:pointer;transition:all 0.22s;overflow:hidden;
@@ -88,7 +92,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:va
 .mc:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 12px 40px rgba(28,58,42,0.12)}
 .mc:hover .mc-arr{opacity:1;transform:translateX(0)}
 .mc-bar{height:3px;background:linear-gradient(90deg,var(--dark),var(--green))}
-.mc-b{padding:32px 34px 36px}
+.mc-b{padding:24px 28px 28px}
 .mc-n{
   font-family:'Playfair Display',serif;
   font-size:54px;color:var(--cream2);line-height:1;margin-bottom:16px;
