@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantauco VC · Manual de Operaciones</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#fff;color:#173404}
+::-webkit-scrollbar{height:4px;width:4px}
+::-webkit-scrollbar-thumb{background:#C0DD97;border-radius:2px}
+
+/* ── STAGE BUTTONS ─────────────────────────────────────────── */
+.stage-btn{cursor:pointer;transition:all 0.15s;border:1.5px solid #C0DD97;border-radius:10px;background:#fff;padding:10px 11px;width:126px;min-width:126px;display:flex;flex-direction:column;gap:4px;text-align:left}
+.stage-btn:hover{border-color:#639922;background:#EAF3DE}
+.stage-btn.active{border-color:#3B6D11;background:#EAF3DE;box-shadow:0 0 0 3px #C0DD9750}
+
+/* ── NAV & TABS ─────────────────────────────────────────────── */
+.nav-btn{padding:8px 16px;font-size:12px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:#639922;white-space:nowrap;transition:all 0.1s;font-family:inherit}
+.nav-btn.on{color:#173404;border-bottom-color:#3B6D11;font-weight:500}
+.nav-btn:hover{color:#3B6D11}
+.tab-btn{flex:1;padding:7px 3px;font-size:10px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:#639922;transition:all 0.1s;font-family:inherit}
+.tab-btn.on{color:#173404;border-bottom-color:#3B6D11;font-weight:500}
+.cat-btn{font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid #C0DD97;background:#fff;color:#3B6D11;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all 0.1s}
+.cat-btn.on{background:#3B6D11;color:#EAF3DE;border-color:#3B6D11}
+.cat-btn:hover{border-color:#639922}
+
+/* ── INPUTS ─────────────────────────────────────────────────── */
+.search-inp{width:100%;border:1px solid #C0DD97;border-radius:8px;padding:8px 12px;font-size:12px;outline:none;background:#fff;color:#27500A;font-family:inherit}
+.search-inp:focus{border-color:#3B6D11;box-shadow:0 0 0 2px #C0DD9750}
+.add-inp{flex:1;border:1px solid #C0DD97;border-radius:7px;padding:6px 9px;font-size:11px;outline:none;background:#fff;color:#27500A;font-family:inherit}
+.add-inp:focus{border-color:#3B6D11;box-shadow:0 0 0 2px #C0DD9750}
+.add-inp::placeholder,.search-inp::placeholder{color:#97C459}
+.add-btn{background:#3B6D11;color:#EAF3DE;border:none;border-radius:7px;padding:6px 11px;font-size:11px;cursor:pointer;font-weight:500;white-space:nowrap;font-family:inherit;transition:background 0.1s}
+.add-btn:hover{background:#27500A}
+.del-btn{background:none;border:none;cursor:pointer;color:#97C459;font-size:15px;padding:0 4px;line-height:1;flex-shrink:0;transition:color 0.1s}
+.del-btn:hover{color:#E24B4A}
+
+/* ── CHECKLIST ───────────────────────────────────────────────── */
+.check-row{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:7px;cursor:pointer;border:1px solid #C0DD97;background:#fff;transition:all 0.12s}
+.check-row:hover{background:#EAF3DE;border-color:#639922}
+.check-row.done{background:#EAF3DE;opacity:0.65}
+.check-box{width:15px;height:15px;min-width:15px;border-radius:4px;border:1.5px solid #97C459;background:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;flex-shrink:0}
+.check-box.on{background:#3B6D11;border-color:#3B6D11}
+
+/* ── MISC ────────────────────────────────────────────────────── */
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid #C0DD97;background:#EAF3DE;color:#27500A;font-weight:500;white-space:nowrap}
+.pill{font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid #C0DD97;background:#EAF3DE;color:#3B6D11}
+.sec-lbl{font-size:10px;font-weight:500;color:#639922;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px}
+.item-row{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:8px;background:#EAF3DE;border:1px solid #C0DD97}
+.dot{width:6px;height:6px;min-width:6px;border-radius:50%;background:#3B6D11;margin-top:4px;flex-shrink:0}
+.note{padding:8px 10px;background:#fff;border:1px solid #97C459;border-left:3px solid #3B6D11;border-radius:7px;font-size:11px;color:#27500A;line-height:1.5}
+.warn{padding:8px 10px;background:#fffbeb;border:1px solid #C0DD97;border-left:3px solid #BA7517;border-radius:7px;font-size:11px;color:#633806;line-height:1.5}
+.concept-card{background:#fff;border:1px solid #C0DD97;border-radius:9px;padding:11px 13px;display:flex;flex-direction:column;gap:4px}
+.concept-tag{font-size:10px;padding:2px 7px;border-radius:20px;background:#EAF3DE;border:1px solid #C0DD97;color:#639922;align-self:flex-start}
+.tool-card{background:#fff;border:1.5px solid #C0DD97;border-radius:10px;padding:13px 14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:border-color 0.12s}
+.tool-card:hover{border-color:#639922}
+.tool-card.open{border-color:#3B6D11;background:#EAF3DE}
+.add-row{display:flex;gap:6px;align-items:center}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app" style="display:flex;flex-direction:column;height:100vh;overflow:hidden"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script>
+const {useState,createElement:h}=React;
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════ */
+
+const TOOLS=[
+{id:"plataforma",name:"Plataforma Tantauco",icon:"🏢",cat:"Gestión interna",desc:"CRM/ERP especialmente diseñado para el proceso de inversión y monitoreo de Tantauco VC. Es la fuente de verdad central del fondo.",uso:"Registrar y seguir cada startup en el pipeline, documentar reuniones, métricas, decisiones y toda la información del proceso de inversión y portfolio.",features:["Pipeline de inversión con 8 etapas oficiales","Registro de reuniones con transcripciones y notas","Overview de cada startup (campos obligatorios para Screening)","Seguimiento de portfolio con métricas y KPIs","Estados especiales: Hold y Declined","Registro de intros a fondos e intros B2B"]},
+{id:"harmonic",name:"Harmonic",icon:"🔍",cat:"Deal flow",desc:"Plataforma de inteligencia de startups que permite buscar, filtrar y obtener información detallada de startups a nivel global.",uso:"Búsqueda activa de startups con thesis fit, obtención de correos de founders y uso del modo GPT para queries en lenguaje natural.",features:["Búsqueda avanzada por país, sector, etapa de financiamiento y métricas","GPT mode: búsqueda de startups usando lenguaje natural","Extracción de correos electrónicos de founders","Datos de financiamiento, equipo e inversores","Alertas de rondas y actualizaciones de startups"]},
+{id:"granola",name:"Granola",icon:"🎙️",cat:"Reuniones",desc:"Herramienta de transcripción y notas de reuniones con IA. Graba, transcribe y genera resúmenes automáticamente.",uso:"Transcribir todas las reuniones con founders y del equipo. El analista es responsable de verificar que Granola esté activo en cada reunión.",features:["Transcripción automática en tiempo real","Resumen post-reunión con puntos clave y action items","Compatible con Google Meet y otras plataformas de videollamada","Historial de todas las reuniones accesible para el equipo","Insumo principal para el auto-rellenado de Plataforma Tantauco (pendiente)"]},
+{id:"notion",name:"Notion",icon:"📝",cat:"Documentación",desc:"Plataforma de documentación y gestión del conocimiento. En Tantauco se usa para los Investment Memos y documentación interna.",uso:"Redacción de Investment Memos, carpeta de memos anteriores, template de memos y propuesta de valor del portfolio.",features:["Carpeta de Investment Memos con todos los memos anteriores","Template estándar para redacción de nuevos memos","Portal de recursos del portfolio (en construcción)","Documentación interna del fondo","Memos de startups declinadas como referencia de aprendizaje"]},
+{id:"gmail",name:"Gmail",icon:"📧",cat:"Comunicación",desc:"Plataforma de email del equipo. Principal canal de comunicación con founders, otros fondos y el ecosistema.",uso:"Contacto en frío con founders, envío de formularios, comunicación durante el proceso de inversión y onboarding del portfolio.",features:["Templates de contacto en frío por sector y etapa","Seguimiento de respuestas y follow-ups","Comunicación con founders durante todo el pipeline","Envío de onboarding email, Founder form y Quarterly form","Integración pendiente con Clay/Apollo para automatización"]},
+{id:"claude",name:"Claude (Anthropic)",icon:"✦",cat:"Inteligencia Artificial",desc:"Asistente de IA avanzado desarrollado por Anthropic. Es el modelo de IA principal que usa el equipo de Tantauco.",uso:"Análisis de documentos, redacción de memos, research de mercados, automatización de flujos con Claude Cowork y apoyo en tareas de análisis.",features:["Análisis y resumen de documentos (Data Room, contratos, transcripciones)","Apoyo en la redacción del Investment Memo","Research de mercados y benchmarks de industria","Claude Cowork: automatización de flujos de trabajo del equipo","Generación de comunicaciones (emails, resúmenes para LPs)","Créditos disponibles para las startups del portfolio"]},
+{id:"chatgpt",name:"ChatGPT (OpenAI)",icon:"🤖",cat:"Inteligencia Artificial",desc:"Asistente de IA de OpenAI. Herramienta de uso general para tareas de análisis, redacción y búsqueda de información.",uso:"Apoyo complementario en tareas de análisis, generación de contenido e investigación de startups y mercados.",features:["Generación de textos y análisis generales","Research de mercados e industrias","Apoyo en la preparación de presentaciones","Búsqueda web en tiempo real (ChatGPT con browsing)","Creación de imágenes y contenido visual"]},
+{id:"gemini",name:"Gemini (Google)",icon:"💎",cat:"Inteligencia Artificial",desc:"Asistente de IA de Google. Integrado con el ecosistema de Google (Gmail, Drive, Docs).",uso:"Apoyo complementario en tareas de análisis y redacción, especialmente útil por su integración nativa con Google Workspace.",features:["Integración nativa con Gmail, Google Drive y Google Docs","Research de mercados con acceso a Google Search","Análisis de documentos de Drive directamente","Generación de contenido y análisis generales","Apoyo en tareas del ecosistema Google"]},
+];
+
+const INIT_CONCEPTS=[
+{id:1,term:"SAFE",cat:"Inversión",def:"Simple Agreement for Future Equity. Acuerdo de inversión que permite a las startups obtener capital ahora con la promesa de dar acciones en una ronda futura. Creado por Y Combinator."},
+{id:2,term:"MOIC",cat:"Generales",def:"Multiple on Invested Capital. Mide cuántas veces se multiplicó el capital invertido. Ej: MOIC de 3x significa que se recuperó 3 veces lo invertido."},
+{id:3,term:"IRR",cat:"Generales",def:"Internal Rate of Return (Tasa Interna de Retorno). Mide la rentabilidad anualizada de una inversión considerando el tiempo en que se obtuvo el retorno."},
+{id:4,term:"ARR",cat:"SaaS",def:"Annual Recurring Revenue. Ingresos recurrentes anuales de una empresa SaaS. Métrica central para evaluar el tamaño y crecimiento de un negocio de suscripción."},
+{id:5,term:"MRR",cat:"SaaS",def:"Monthly Recurring Revenue. Ingresos recurrentes mensuales. ARR = MRR × 12."},
+{id:6,term:"GTM",cat:"Generales",def:"Go-to-Market. Estrategia que define cómo una empresa llevará su producto al mercado y llegará a sus clientes objetivo."},
+{id:7,term:"PMF",cat:"Generales",def:"Product-Market Fit. El punto donde el producto satisface una necesidad real del mercado de forma que genera tracción orgánica y retención."},
+{id:8,term:"TAM",cat:"Mercado",def:"Total Addressable Market. El mercado total disponible si se captura el 100% de los clientes potenciales. Representa el techo máximo de la oportunidad."},
+{id:9,term:"SAM",cat:"Mercado",def:"Serviceable Available Market. La parte del TAM que la empresa puede alcanzar con su modelo de negocio y geografía actuales."},
+{id:10,term:"SOM",cat:"Mercado",def:"Serviceable Obtainable Market. La porción del SAM que la empresa puede capturar de forma realista en el corto/mediano plazo."},
+{id:11,term:"TTV",cat:"SaaS",def:"Time to Value. Tiempo que tarda un cliente en experimentar el valor prometido del producto. Un TTV corto indica una buena experiencia de onboarding."},
+{id:12,term:"Lead Investor",cat:"Inversión",def:"Inversor principal que aporta el mayor capital y negocia todos los términos de una ronda. Actúa como ancla de confianza para atraer a los demás inversores."},
+{id:13,term:"Cap Table",cat:"Inversión",def:"Tabla de capitalización. Muestra la estructura de propiedad de una empresa: quién posee qué porcentaje de acciones y a qué precio."},
+{id:14,term:"CAC",cat:"SaaS",def:"Customer Acquisition Cost. Costo promedio de adquirir un nuevo cliente, incluyendo marketing y ventas."},
+{id:15,term:"Aceleradora",cat:"Ecosistema",def:"Organización que proporciona capital semilla, mentoría y redes de contacto para startups en etapa temprana durante un período limitado (3 a 6 meses). Ej: YC, Platanus, StartupChile."},
+{id:16,term:"Burn Rate",cat:"Generales",def:"Cuánto dinero en efectivo gasta una startup cada mes. Net Burn = Gasto total mensual menos los ingresos mensuales."},
+{id:17,term:"Notas Convertibles",cat:"Inversión",def:"Instrumentos de deuda que se convierten en acciones en una futura ronda de financiamiento, generalmente con un descuento o valuation cap."},
+{id:18,term:"Vesting",cat:"Inversión",def:"Proceso por el cual los founders o empleados adquieren progresivamente el derecho de propiedad sobre sus acciones a lo largo del tiempo."},
+{id:19,term:"Cliff",cat:"Inversión",def:"Período mínimo que debes trabajar antes de recibir cualquier acción. Ejemplo: cliff de 1 año — si te vas al mes 11, no recibes nada; al mes 12, recibes todo lo acumulado."},
+{id:20,term:"ESOP",cat:"Inversión",def:"Employee Stock Option Plan. Plan que otorga a los empleados el derecho a comprar acciones de la empresa a un precio fijo (strike price) en el futuro."},
+{id:21,term:"Pro-rata Rights",cat:"Inversión",def:"Derecho del inversor a participar en rondas futuras manteniendo su porcentaje de participación para no diluirse. Común en term sheets de fondos VC."},
+{id:22,term:"Liquidation Preference",cat:"Inversión",def:"En caso de venta de la empresa, los inversores cobran antes que los empleados y founders. Define el orden y monto de distribución de los retornos."},
+{id:23,term:"ROFR",cat:"Inversión",def:"Right of First Refusal. Derecho contractual que da prioridad a su titular para comprar un activo antes de que el propietario pueda venderlo a un tercero."},
+{id:24,term:"LPA",cat:"Inversión",def:"Limited Partnership Agreement. Contrato que regula la relación entre los LPs (inversores del fondo) y el GP (quien gestiona el fondo)."},
+{id:25,term:"Cayman Sandwich",cat:"Legal",def:"Estructura legal de tres capas para startups latinoamericanas: holding en Islas Caimán, LLC en Delaware y sociedad operativa en LATAM. Estándar que los fondos VC conocen y aceptan."},
+{id:26,term:"Moat",cat:"Generales",def:"Ventaja competitiva sostenible. Similar a un foso alrededor de un castillo: hace difícil que los competidores repliquen el negocio."},
+{id:27,term:"White-label",cat:"Generales",def:"Producto fabricado por una empresa y vendido a otra, que lo renombra y comercializa bajo su propia marca."},
+{id:28,term:"Escrow",cat:"Legal",def:"Depósito en garantía. Servicio donde un tercero neutro guarda fondos o documentos hasta que se cumplan las condiciones acordadas. Común en cierres de inversión."},
+{id:29,term:"Take Rate",cat:"Marketplace",def:"Porcentaje de ingresos que una plataforma se queda de cada transacción que facilita. Métrica central para evaluar marketplaces."},
+{id:30,term:"GMV",cat:"Marketplace",def:"Gross Merchandise Value. Valor total de todos los bienes vendidos en una plataforma antes de restar gastos, descuentos o devoluciones."},
+{id:31,term:"ARPU",cat:"SaaS",def:"Average Revenue Per User. Ingreso promedio por usuario. Útil para comparar eficiencia de monetización."},
+{id:32,term:"ARPA",cat:"SaaS",def:"Average Revenue Per Account. Similar al ARPU pero por cuenta (empresa), usado en modelos B2B."},
+{id:33,term:"KYC",cat:"Fintech",def:"Know Your Customer. Proceso de verificación de identidad de los clientes, requerido por regulaciones financieras para prevenir fraude y lavado de dinero."},
+{id:34,term:"Open Banking",cat:"Fintech",def:"Sistema que permite a terceros autorizados por el cliente acceder de forma segura a la información bancaria mediante APIs."},
+{id:35,term:"Embedded Finance",cat:"Fintech",def:"Integración de servicios financieros (pagos, préstamos, seguros) directamente dentro de productos de empresas no financieras."},
+{id:36,term:"Stablecoins",cat:"Fintech",def:"Criptomonedas diseñadas para tener un valor estable, vinculando su precio a un activo externo (dólar, euro, oro) para reducir la volatilidad."},
+{id:37,term:"ROAS",cat:"Generales",def:"Return on Advertising Spend. Cuánto ingreso genera cada peso/dólar invertido en publicidad."},
+{id:38,term:"Moral Hazard",cat:"Generales",def:"Riesgo moral. Ocurre cuando alguien asume más riesgos porque sabe que otra entidad asumirá las consecuencias negativas. Genera incentivos desalineados."},
+{id:39,term:"Scrum / Kanban",cat:"Operaciones",def:"Scrum: marco ágil que organiza el trabajo en sprints. Kanban: metodología visual que gestiona el flujo de trabajo con tableros y limita las tareas en curso."},
+{id:40,term:"PUDO",cat:"Logística",def:"Pick-Up and Drop-Off. Punto donde los clientes recogen o dejan paquetes u órdenes. Relevante en startups de logística y e-commerce."},
+];
+
+/* ── STAGES ─────────────────────────────────────────────────── */
+const iS=[
+{id:"scouting",name:"Scouting",sub:"Startups a contactar",kind:"source",desc:"Primera etapa del pipeline. Startups identificadas que queremos contactar. El trabajo principal de los analistas ocurre acá: búsqueda proactiva en múltiples fuentes y contacto en frío a founders. Se espera del analista una actitud proactiva en la búsqueda de oportunidades y en optimizar su tiempo y las tareas manuales.",tools:["Harmonic (búsqueda + GPT mode)","LinkedIn","Gmail","Plataforma Tantauco","DF+ / DFmás","Clay / Apollo (pendiente)"],storage:"Plataforma Tantauco › Scouting",resp:["Analyst"],info:["Nombre empresa","País","Sector / vertical","Etapa de financiamiento","Fuente de origen","URL web / LinkedIn","Email o contacto del founder","Descripción y perfil básico de la startup"],notes:"Thesis fit objetivo: Pre-Seed a Serie A · LATAM · SaaS, Fintech y Marketplace. Fuentes históricas: Red propia 34% · VCs 17% · Co-inv 13% · LP 8% · Emprendedor 6.5% · Eventos 5%",events:["Startup identificada en Harmonic","Startup encontrada en DF+ / noticia","Startup de batch / competencia / evento","Startup compartida por otro fondo VC","Startup contactada por LinkedIn","Startup contactada por email","Respuesta recibida del founder","Sin respuesta → follow-up D+7","Founder declina → Declined","Founder acepta reunión → Screening"],tasks:["Buscar startups en Harmonic (GPT mode) con thesis fit","Revisar DF+ semanalmente e identificar startups en noticias","Revisar nuevas batches y competencias relevantes al publicarse","Preparar mensaje de contacto personalizado según sector y etapa","Registrar startup en Plataforma Tantauco con fuente de origen","Hacer seguimiento: follow-up si no hay respuesta en 7 días","Registrar resultado del contacto en Plataforma Tantauco"],sub2:[{t:"Fuentes de búsqueda activa",items:[{l:"Harmonic",d:"Búsqueda por criterios (país, sector, etapa) + GPT mode. Extracción de correos de founders."},{l:"DF+ / DFmás",d:"Revisión semanal de noticias de startups LATAM. Pendiente: automatización N8N con resumen semanal."},{l:"Batches y eventos",d:"YC, Platanus, StartupChile, HubSpark, Demo Days. Al publicarse nueva batch, revisar startups seleccionadas."},{l:"LinkedIn / Email",d:"Búsqueda manual de founders. Contacto directo. Pendiente: Clay/Apollo para automatizar."}]},{t:"Reuniones con otros fondos VC (cada 2 meses)",items:[{l:"Política de intercambio",d:"Solo se comparten startups que ya NO están siendo analizadas activamente. Nunca startups en pipeline activo."},{l:"Prep automática de reunión",d:"PENDIENTE: Automatización previa a cada reunión que investiga la última inversión del otro fondo y noticias de su portfolio."}]}],ai:["🔴 PENDIENTE · Automatización semanal (N8N) que busca noticias de startups LATAM desde DF+, TechCrunch LATAM y Contxto","🔴 PENDIENTE · Scraper de correos + automatización de contacto en frío via Clay o Apollo integrado con Gmail","🔴 PENDIENTE · Uso sistemático del modo GPT de Harmonic para obtener startups y correos de founders","🔴 PENDIENTE · Lead scoring automático por thesis fit antes de contactar","🔴 PENDIENTE · Automatización de follow-up con N8N o Claude Cowork si no hay respuesta en 7 días","🔴 PENDIENTE · Prep automática previa a reuniones con otros fondos VC (última inversión, noticias de su portfolio)"]},
+{id:"screening",name:"Screening",sub:"Primera reunión realizada",kind:"status",desc:"Una startup pasa a Screening cuando el founder aceptó reunirse. El analista realiza la primera reunión, toma notas y completa el Overview en Plataforma Tantauco. Este Overview es el requisito mínimo para presentar la startup en la reunión semanal del equipo. Sin Overview completo no se puede presentar.",tools:["Google Meet","Gmail","Granola","Plataforma Tantauco"],storage:"Plataforma Tantauco › Screening",resp:["Analyst"],info:["Country + Founded + Website + LinkedIn + Harmonic link","Descripción del negocio","Target Customer","Revenue Model","Go To Market","Categories, Verticals, Industries, Business Models","Notas de la primera reunión","Métricas y datos adicionales disponibles"],notes:"REQUISITO para reunión semanal: Overview completo en Plataforma Tantauco. El Overview permite a cualquier miembro del equipo hacerse una idea inicial clara del negocio sin haber estado en la reunión.",events:["Primera reunión agendada","Primera reunión realizada","Transcripción generada en Granola","Overview completado en Plataforma Tantauco (requisito)","Presentada en reunión semanal del equipo","Aprobada por el equipo → Internal Committee","Rechazada por el equipo → Declined","Más info requerida → analista investiga y vuelve","Sin suficiente interés → Hold"],tasks:["Confirmar la reunión y enviar el invite por Gmail","Realizar la reunión y tomar notas activamente","Verificar que Granola grabó y transcribió correctamente la reunión","Completar el Overview obligatorio en Plataforma Tantauco","Agregar toda la información adicional disponible: métricas, equipo, cap table","Preparar una presentación breve para la reunión semanal del equipo","Presentar la startup al equipo y documentar la decisión en Plataforma Tantauco"],ai:["🔴 PENDIENTE · Auto-rellenado del Overview en Plataforma Tantauco desde la transcripción de Granola con N8N o Claude Cowork","🔴 PENDIENTE · Extracción automática de métricas clave desde la transcripción + web scraping de la startup"]},
+{id:"ic",name:"Internal Committee",sub:"Análisis mayor + data room",kind:"status",desc:"Una startup llega a Internal Committee cuando el equipo la aprobó en la reunión semanal de Screening. El analista le escribe al founder para expresar interés y solicitar más información — idealmente un Data Room. Se profundiza el análisis y se prepara una presentación en Plataforma Tantauco para la siguiente reunión semanal.",tools:["Gmail","Granola","Plataforma Tantauco","Google Docs"],storage:"Plataforma Tantauco › Internal Committee",resp:["Analyst"],info:["Data Room o info adicional del founder","Análisis de los puntos que llamaron la atención en Screening","Análisis de mercado (TAM/SAM/SOM)","Análisis del equipo fundador","Modelo de negocio y financials básicos"],notes:"El análisis se enfoca en los puntos específicos que generaron interés en Screening. No es un due diligence completo.",events:["Startup aprobada en reunión semanal → entra a IC","Email enviado al founder solicitando Data Room","Data Room o información adicional recibida","Análisis mayor completado","Presentada en reunión semanal (análisis mayor)","Partners solicitan segunda reunión → Evaluación","Equipo decide declinar → Declined","Buen deal pero mal timing → Hold"],tasks:["Escribir email al founder expresando interés y solicitando Data Room","Analizar los puntos específicos que llamaron la atención en Screening","Revisar Data Room o info adicional recibida","Completar análisis de mercado básico (TAM/SAM/SOM)","Investigar equipo fundador: LinkedIn, Harmonic, referencias disponibles","Preparar el análisis mayor y la presentación directamente en Plataforma Tantauco","Presentar al equipo en reunión semanal y documentar la decisión"],ai:["🔴 PENDIENTE · Análisis automático de documentos del Data Room con IA","🔴 PENDIENTE · Generación automática del análisis de mercado (TAM/SAM/SOM) con datos en tiempo real","🔴 PENDIENTE · Template de email de solicitud de Data Room personalizado por sector"]},
+{id:"eval",name:"Evaluación",sub:"Segunda reunión — dupla asignada",kind:"status",desc:"Los Partners solicitan la segunda reunión. El deal se asigna a una dupla Analyst + Partner. Idas y vueltas de Q&A con el founder. Parte clave: buscar referencias del equipo fundador, referencias del producto con clientes reales y probar el producto directamente cuando sea posible.",tools:["Google Meet","Gmail","Granola","Plataforma Tantauco","Data Room"],storage:"Plataforma Tantauco › Evaluación",resp:["Analyst","Partner"],info:["Data Room completo","P&L + proyecciones financieras","KPIs históricos y actuales","Cap table","Contratos clave","Respuestas Q&A con el founder","Referencias del equipo fundador","Referencias del producto y de clientes"],notes:"Esta etapa puede durar semanas. La señal de avance es la indicación explícita del Partner de armar el Memo. La Plataforma Tantauco permite registrar reuniones con nombre y participantes (primera o segunda reunión) y pegar la transcripción y notas importantes.",events:["Partners solicitan segunda reunión → startup entra a Evaluación","Dupla Analyst + Partner asignada al deal","Segunda reunión realizada","Q&A enviado al founder","Respuesta Q&A recibida","Referencias del equipo y producto consultadas","Análisis de Data Room completado","Indicación del Partner de armar Investment Memo → Memo","Decisión de declinar → Declined","Decisión de esperar → Hold"],tasks:["Agendar la segunda reunión con los founders (Partner + Analyst)","Realizar la segunda reunión y verificar que Granola transcribió correctamente","Enviar Q&A al founder post-reunión con las dudas pendientes","Analizar las respuestas del founder y revisar el Data Room completo","Buscar y consultar referencias del equipo fundador","Buscar referencias del producto con clientes o usuarios del segmento objetivo","Probar el producto directamente cuando sea posible","Documentar avances, conclusiones y dudas pendientes en Plataforma Tantauco","Recibir indicación del Partner para proceder con el Investment Memo"],ai:["🔴 PENDIENTE · Benchmark automático de métricas vs. comparables en LATAM","🔴 PENDIENTE · Auto-rellenado de Plataforma Tantauco desde Granola: la plataforma permite crear reuniones con nombre y participantes, indicando si es primera o segunda reunión, y permite pegar la transcripción y notas para que un agente las estructure automáticamente"]},
+{id:"memo",name:"Investment Memo",sub:"Analista redacta el memo",kind:"action",desc:"El analista recibe la indicación del Partner de proceder con el memo. Se redacta en Notion, en la carpeta de Investment Memos, donde están todos los memos anteriores y el template base. El memo debe ser conciso, respetar el formato y generar una narrativa clara.",tools:["Notion (carpeta Investment Memos)","Granola (transcripciones)","Plataforma Tantauco","Gmail"],storage:"Notion › Carpeta Investment Memos",resp:["Analyst","Partner"],info:["Toda la info acumulada en Evaluación","Transcripciones de Granola de todas las reuniones","Data Room completo","Q&A respondido por el founder","Memos anteriores como referencia de formato y estilo"],notes:"Estructura del memo: 1) Executive Summary 2) Equipo 3) Solución 4) Oportunidad de mercado 5) Análisis financiero 6) Oportunidad de inversión.",events:["Indicación del Partner de proceder con el memo","Borrador completado por el analista","Memo enviado al Partner para revisión","Observaciones del Partner incorporadas","Memo aprobado por el Partner → External Committee"],tasks:["Recibir indicación explícita del Partner de proceder con el memo","Revisar memos anteriores en Notion como referencia de formato y calidad","Reunir todos los insumos: transcripciones de Granola, Data Room, Q&A","Redactar el memo completo en Notion siguiendo el template estándar","Asegurar que el memo tenga una narrativa clara y un hilo conductor","Enviar el borrador al Partner para revisión","Incorporar los comentarios y correcciones del Partner"],ai:["🔴 PENDIENTE · Generación automática del borrador del memo desde transcripciones de Granola + datos de Plataforma Tantauco con Claude Cowork o N8N","🔴 PENDIENTE · Sección de mercado auto-generada con datos en tiempo real usando búsqueda web"]},
+{id:"ec",name:"External Committee",sub:"Comité externo — decisión final",kind:"status",desc:"Comité externo donde los Partners presentan la startup junto a expertos del sector. Se decide definitivamente si se aprueba o rechaza el cheque. El analista no participa en esta reunión.",tools:["Google Meet","Notion (memo)","Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco",resp:["Partner"],info:["Investment Memo aprobado","Expertos del sector confirmados","Presentación ejecutiva del deal","Risk assessment final"],notes:"Participantes: Partners del fondo · Venture Partner (requerido) · Advisor del sector.",events:["Expertos del comité identificados y confirmados","Comité agendado","Investment Memo enviado a los miembros","External Committee realizado","Feedback de expertos documentado","Aprobado → Due Diligence Legal","Rechazado → Declined"],tasks:["El Partner coordina el comité y gestiona la logística","El Partner envía el Investment Memo a todos los miembros con anticipación","El Partner prepara la presentación ejecutiva del deal","Los Partners documentan el feedback y la decisión en Plataforma Tantauco"],ai:[]},
+{id:"dd",name:"Due Diligence Legal",sub:"Partner + Abogados",kind:"action",desc:"Due diligence legal completa liderada por el Partner con apoyo de abogados externos. Se verifica que la estructura legal no tenga impedimentos para la inversión. Este proceso ocurre entre los abogados, los founders y los Partners.",tools:["Abogados externos","Data Room","Gmail","Google Drive"],storage:"Plataforma Tantauco + Google Drive",resp:["Partner","Abogados"],info:["Documentos corporativos y acta de constitución","Cap table legal completa","Contratos laborales clave","Propiedad intelectual (IP)","Contratos con clientes y proveedores clave","Litigios y contingencias pendientes","Cumplimiento regulatorio"],notes:"¿Red flags bloqueantes? → Declined · ¿Condiciones negociables? → resolver y cerrar · ¿Sin issues? → Inversión.",events:["Abogados externos contratados","DD legal iniciada","Informe de DD recibido","Red flag legal identificado","Condiciones negociadas y resueltas","DD completada sin issues → proceder al cierre"],tasks:["Contratar o coordinar los abogados externos","Compartir el Data Room con los abogados","Hacer seguimiento al avance de la DD","Revisar el informe de DD entregado por los abogados","Negociar condiciones si es necesario","Documentar conclusiones y decisión final en Plataforma Tantauco"],ai:[]},
+{id:"invested",name:"Invested",sub:"Cierre + portfolio",kind:"complete",desc:"Una vez completada la Due Diligence Legal, se procede al cierre formal. Firma de documentos, transferencia de fondos y registro oficial. La startup queda registrada como invertida en Plataforma Tantauco e inicia el Portfolio Monitoring.",tools:["Abogados","DocuSign / Firma física","Gmail","Plataforma Tantauco"],storage:"Plataforma Tantauco",resp:["Partner","Abogados","Analyst"],info:["Term sheet firmado","Documentos de cierre firmados (SHA, SPA u otros)","Confirmación de transferencia de fondos","Monto invertido, valoración y % equity","Vehículo e instrumento de inversión","Cap table post-inversión","Fecha de cierre"],notes:"El cierre es liderado por el Partner y los abogados. El analista apoya en el registro en Plataforma Tantauco y prepara el mini-memo resumen para los LPs.",events:["Term sheet negociado y firmado","Documentos de cierre preparados por abogados","Documentos firmados por ambas partes","Transferencia de fondos realizada","Cierre legal confirmado","Startup marcada como Invested en Plataforma Tantauco","LPs notificados","Startup ingresa al Portfolio Monitoring"],tasks:["Firma de documentos de cierre","Transferencia de fondos","Confirmar cierre legal con abogados","Actualizar el estado a Invested en Plataforma Tantauco con todos los datos del cierre","Armar un mini-memo resumen de la inversión para enviar a los LPs","Iniciar el proceso de Portfolio Monitoring (onboarding)"],ai:["🔴 PENDIENTE · Generación automática del mini-memo resumen para LPs a partir de los datos del Investment Memo y la Plataforma Tantauco"]},
+];
+const sS=[
+{id:"declined",name:"Declined",sub:"Descartada del pipeline",kind:"declined",desc:"La startup fue descartada del pipeline. Se documenta el motivo para aprendizaje interno. Puede reactivarse si cambian las condiciones.",tools:["Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco › Declined",resp:["Analyst"],info:["Motivo del rechazo","Etapa en que fue descartada","Feedback enviado al founder (si aplica)"],notes:"Una startup Declined puede reactivarse si cambian las condiciones.",events:["Decisión de decline tomada por el equipo","Motivo documentado en Plataforma Tantauco","Email de feedback enviado al founder (opcional)"],tasks:["Documentar motivo del decline en Plataforma Tantauco","Enviar email de feedback al founder si corresponde","Marcar como Declined en el pipeline"],ai:["🟡 PARCIAL · Template de email de decline personalizado según motivo"]},
+{id:"hold",name:"Hold",sub:"Follow-up cada 3–4 meses",kind:"hold",desc:"Startups que generan interés pero no en este momento. Los analistas deben contactarlas cada 3-4 meses para recibir actualizaciones y evaluar si el timing cambió.",tools:["Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco › Hold",resp:["Analyst"],info:["Motivo del Hold","Fecha de último contacto","Próxima fecha de seguimiento","Updates recibidos"],notes:"Responsabilidad del analista: mantener contacto activo con startups en Hold. No dejar que se enfríen.",events:["Startup puesta en Hold","Follow-up enviado al founder (cada 3-4 meses)","Update recibida del founder","Startup reactivada al pipeline activo","Startup promovida a Declined"],tasks:["Documentar motivo del Hold en Plataforma Tantauco","Agendar recordatorio de follow-up en 3-4 meses","Enviar email de check-in al founder cada 3-4 meses","Registrar updates recibidos en Plataforma Tantauco","Evaluar en cada check-in si se reactiva o se declina"],ai:["🔴 PENDIENTE · Recordatorio automático cada 3-4 meses para follow-up a startups en Hold","🔴 PENDIENTE · Monitoreo automático de noticias de startups en Hold (rondas, nuevas métricas)"]},
+];
+const mS=[
+{id:"m_onboarding",name:"Onboarding",sub:"Bienvenida al portfolio",kind:"source",desc:"Inmediatamente después del cierre, la startup ingresa al Portfolio Monitoring. Se da la bienvenida formal, se presenta el equipo y los beneficios, y se establece la cadencia de trabajo. Se hace una primera categorización para dosificar el esfuerzo del equipo de forma inteligente.",tools:["Plataforma Tantauco","Gmail","Google Meet","Granola"],storage:"Plataforma Tantauco",resp:["Analyst","Partner"],info:["Equipo fundador y contactos clave","Métricas baseline al momento del cierre","Necesidades prioritarias del founder","Categorización inicial: tier y áreas de valor"],notes:"Un buen onboarding establece la base de confianza con los founders.",events:["Equipo responsable asignado (Partner G + Analyst L)","Categorización inicial completada","Onboarding email enviado","Founder form enviado y recibido","Quarterly form enviado","Kick-off realizado y transcrito en Granola","Reuniones recurrentes agendadas"],tasks:["Confirmar la asignación del equipo (Partner G + Analyst L) en Plataforma Tantauco","Hacer la categorización inicial: tier, cercanía, áreas de valor, necesidades prioritarias","Enviar el onboarding email con Founder form y Quarterly form","Agendar y realizar el kick-off con los founders","Verificar que Granola grabó el kick-off y estructurar insights en Plataforma Tantauco","Registrar la información del onboarding en Plataforma Tantauco","Agendar las reuniones recurrentes con la cadencia acordada"],sub2:[{t:"Categorización inicial de la startup",items:[{l:"Tier",d:"Clasificación según potencial de retorno y etapa actual. Permite priorizar dónde dedicar más tiempo."},{l:"Cercanía y frecuencia",d:"¿Cuánto contacto necesita esta startup? Define la intensidad del seguimiento."},{l:"Áreas de valor",d:"¿En qué puede ayudar más Tantauco: fundraising, intros B2B, hiring, estrategia, expansión regional?"},{l:"Necesidades prioritarias",d:"¿Qué es lo más urgente ahora? Se recoge en el Founder form y se discute en el kick-off."}]},{t:"Propuesta de valor del portfolio",items:[{l:"Red de fondos",d:"BBDD de fondos con los que Tantauco tiene relación para intros en futuras rondas."},{l:"Perks y créditos",d:"Créditos de Anthropic, tokens y otros beneficios tecnológicos disponibles."},{l:"Red de empresas en Chile",d:"Principales empresas y contactos para intros B2B relevantes."},{l:"Red de advisors",d:"Venture Partners y expertos que pueden aportar conocimiento o abrir puertas."}]}],ai:["🔴 PENDIENTE · Envío automático trimestral del Quarterly form a cada startup del portfolio"]},
+{id:"m_recurrente",name:"Reuniones Recurrentes",sub:"Seguimiento activo continuo",kind:"status",desc:"Proceso continuo durante toda la vida de la inversión. Reuniones periódicas de touch point, recolección de métricas, registro estructurado y entrega de valor activo. A cada reunión asiste un Partner y un Analista. Es responsabilidad del analista que las reuniones sean grabadas con Granola y que los insights queden registrados en Plataforma Tantauco.",tools:["Google Meet","Granola","Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco + Granola",resp:["Analyst","Partner"],info:["KPIs del período","Updates del equipo y producto","Blockers y necesidades","Notas de la reunión anterior","Cambios relevantes en equipo, mercado o estrategia"],notes:"Frecuencia: reunión mensual de touch point + Quarterly form trimestral.",events:["Reunión mensual agendada","Reunión realizada y grabada con Granola","Insights estructurados y registrados en Plataforma Tantauco","Métricas actualizadas","Quarterly form enviado y procesado","Categorización actualizada si corresponde"],tasks:["Preparar la reunión: revisar notas anteriores, métricas e info relevante de la startup","Realizar la reunión junto al Partner y verificar que Granola está grabando","Extraer y estructurar los insights de la transcripción de Granola post-reunión","Actualizar Plataforma Tantauco con métricas, notas clave y próximos pasos","Gestionar el envío trimestral del Quarterly form y consolidar la información recibida","Identificar oportunidades de valor concretas y coordinar con el Partner"],sub2:[{t:"Contenido estándar de las reuniones mensuales",items:[{l:"Estado general",d:"¿Cómo va el negocio? ¿Hay cambios importantes desde la última reunión?"},{l:"Métricas clave",d:"ARR / MRR, crecimiento, churn, runway, equipo."},{l:"Blockers y necesidades",d:"¿Qué está frenando a la startup? ¿En qué puede ayudar Tantauco?"},{l:"Fundraising",d:"¿Están levantando ronda? ¿Cuándo? ¿Qué necesitan del fondo?"},{l:"Cambios relevantes",d:"Cambios en equipo, producto, mercado o estrategia."}]}],ai:["🔴 PENDIENTE · Bot de noticias pre-reunión: busca novedades relevantes de cada startup y entrega insights y preguntas útiles para el founder","🔴 PENDIENTE · Agente de Granola → Plataforma Tantauco: lee la transcripción post-reunión y estructura automáticamente notas, métricas y datos importantes","🔴 PENDIENTE · Envío automático trimestral del Quarterly form","🔴 PENDIENTE · Agentes de señales por startup: monitorean cumpleaños de founders, actualizaciones en LinkedIn, menciones en prensa y cambios de cargo. Todo queda registrado en Plataforma Tantauco"]},
+{id:"m_soporte",name:"Soporte Activo",sub:"Entrega de valor al portfolio",kind:"complete",desc:"Más allá del capital, Tantauco busca ser un aliado real para sus startups. El soporte activo cubre cinco tracks de valor concreto: estrategia, intros a inversores, intros B2B, perks y comunidad. El equipo busca proactivamente nuevas formas de entregar valor.",tools:["Gmail","LinkedIn","WhatsApp","Plataforma Tantauco","Notion perks"],storage:"Plataforma Tantauco",resp:["Partner","Principal","Analyst"],info:["Necesidades actuales de la startup","BBDD de fondos de inversión","Red de empresas y contactos B2B en Chile","Perks y beneficios disponibles","Vacantes de hiring de las startups"],notes:"El soporte no es reactivo — el equipo busca proactivamente formas de agregar valor según la etapa y tier de cada startup.",events:["Intro a fondo realizada y resultado registrado","Intro B2B realizada y resultado registrado","Perk activado","Sesión de apoyo estratégico realizada","Vacante publicada en portal y RRSS","Nueva forma de valor identificada e implementada"],tasks:["Identificar en cada reunión mensual las necesidades concretas y oportunidades de apoyo","Coordinar con el Partner las intros a fondos o clientes B2B que correspondan","Gestionar el acceso de las startups a los perks y beneficios disponibles","Publicar y difundir vacantes de hiring del portfolio","Registrar en Plataforma Tantauco todas las intros realizadas y su resultado","Mantener el grupo de WhatsApp del portfolio activo con mensajes continuos de valor","Explorar y proponer nuevas formas de entregar valor al portfolio de forma proactiva"],sub2:[{t:"Tracks de soporte",items:[{l:"Track 1 · Estrategia",d:"Apoyo del Partner en decisiones estratégicas: fundraising, cuánto levantar, revisión de deck y Data Room, expansión regional."},{l:"Track 2 · Intros a inversores",d:"BBDD de fondos para intros cuando la startup está levantando ronda. Se registra cada intro y resultado en Plataforma Tantauco."},{l:"Track 3 · Intros B2B",d:"Conexiones con potenciales clientes o socios de la red de Tantauco en Chile y LATAM."},{l:"Track 4 · Perks",d:"Créditos de Anthropic, tokens, descuentos con proveedores. Pendiente: portal centralizado para founders."},{l:"Track 5 · Comunidad",d:"Grupo de WhatsApp activo con todas las startups. El equipo envía mensajes regulares de valor al portfolio."}]}],ai:["🔴 PENDIENTE · Portal de recursos del portfolio: plataforma donde las startups puedan ver fondos, empresas clave en Chile, perks y recursos disponibles","🔴 PENDIENTE · Matching automático de intros a fondos y B2B según el perfil de la startup","🔴 PENDIENTE · Exploración continua de nuevas formas de valor: proceso sistemático para identificar nuevos perks, alianzas y recursos"]},
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   HOOKS
+═══════════════════════════════════════════════════════════════ */
+function useAITasks(all){
+  const init={};
+  all.forEach(s=>{init[s.id]=s.ai.map(t=>({text:t,done:false}));});
+  const [tasks,setT]=useState(init);
+  const toggle=(sid,i)=>setT(p=>{const a=[...(p[sid]||[])];a[i]={...a[i],done:!a[i].done};return{...p,[sid]:a};});
+  const add=(sid,text)=>{if(!text.trim())return;setT(p=>({...p,[sid]:[...(p[sid]||[]),{text:text.trim(),done:false}]}));};
+  const getSorted=sid=>{const a=(tasks[sid]||[]).map((t,i)=>({...t,i}));return[...a.filter(t=>!t.done),...a.filter(t=>t.done)];};
+  return{toggle,add,getSorted};
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENTS
+═══════════════════════════════════════════════════════════════ */
+
+function CheckIcon(){return h("svg",{width:9,height:7,viewBox:"0 0 9 7"},h("polyline",{points:"1,3.5 3.5,6 8,1",fill:"none",stroke:"#EAF3DE",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
+function ArrowIcon(){return h("svg",{width:18,height:12,viewBox:"0 0 18 12"},h("line",{x1:1,y1:6,x2:13,y2:6,stroke:"#97C459",strokeWidth:1.5}),h("polyline",{points:"8,2 13,6 8,10",fill:"none",stroke:"#97C459",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
+function ChevronRight({open}){return h("svg",{width:12,height:12,viewBox:"0 0 12 12",style:{transform:open?"rotate(90deg)":"none",transition:"transform 0.15s",flexShrink:0}},h("polyline",{points:"3,2 9,6 3,10",fill:"none",stroke:"#97C459",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
+
+function AITab({s,toggle,add,getSorted}){
+  const [newT,setNewT]=useState("");
+  const sorted=getSorted(s.id);
+  const done=sorted.filter(t=>t.done).length;
+  const tot=sorted.length;
+  const pct=tot>0?Math.round(done/tot*100):0;
+  const submit=()=>{if(newT.trim()){add(s.id,newT);setNewT("");}};
+  return h("div",{style:{display:"flex",flexDirection:"column",gap:8}},
+    tot>0&&h("div",{style:{padding:"8px 10px",background:"#EAF3DE",border:"1px solid #C0DD97",borderRadius:7,display:"flex",gap:8,alignItems:"center"}},
+      h("span",{style:{flex:1,fontSize:11,color:"#27500A",fontWeight:500}},tot+" tareas · "+done+"/"+tot+" completadas"),
+      h("div",{style:{display:"flex",alignItems:"center",gap:5}},
+        h("div",{style:{height:4,width:60,background:"#C0DD97",borderRadius:2,overflow:"hidden"}},
+          h("div",{style:{width:pct+"%",height:"100%",background:"#3B6D11",borderRadius:2,transition:"width 0.3s"}})
+        ),
+        h("span",{style:{fontSize:10,color:"#27500A",fontWeight:500}},pct+"%")
+      )
+    ),
+    h("div",{className:"add-row"},
+      h("input",{className:"add-inp",placeholder:"Agregar nueva tarea de automatización...",value:newT,onChange:e=>setNewT(e.target.value),onKeyDown:e=>{if(e.key==="Enter")submit();}}),
+      h("button",{className:"add-btn",onClick:submit},"+ Agregar")
+    ),
+    sorted.filter(t=>!t.done).length>0&&h("div",{className:"sec-lbl"},"Pendientes ("+sorted.filter(t=>!t.done).length+")"),
+    ...sorted.filter(t=>!t.done).map(t=>h("div",{key:t.i,className:"check-row",onClick:()=>toggle(s.id,t.i)},
+      h("div",{className:"check-box"}),
+      h("span",{style:{fontSize:11,color:"#173404",lineHeight:1.5}},t.text)
+    )),
+    done>0&&h("div",{className:"sec-lbl",style:{marginTop:4}},"Completadas ("+done+")"),
+    ...sorted.filter(t=>t.done).map(t=>h("div",{key:t.i,className:"check-row done",onClick:()=>toggle(s.id,t.i)},
+      h("div",{className:"check-box on"},h(CheckIcon)),
+      h("span",{style:{fontSize:11,color:"#639922",lineHeight:1.5,textDecoration:"line-through"}},t.text)
+    )),
+    tot===0&&h("div",{style:{fontSize:11,color:"#97C459",padding:"10px",textAlign:"center"}},"No hay automatizaciones registradas para esta etapa.")
+  );
+}
+
+function Panel({s,onClose,toggle,add,getSorted}){
+  const [tab,setTab]=useState("overview");
+  const tabs=[["overview","Resumen"],["tasks","Tareas"],["ai","Automatización IA"],["tools","Herramientas"]];
+  return h("div",{style:{width:360,minWidth:360,borderLeft:"1.5px solid #C0DD97",background:"#fff",display:"flex",flexDirection:"column",height:"100%"}},
+    h("div",{style:{padding:"13px 15px 10px",borderBottom:"1.5px solid #C0DD97",background:"#EAF3DE",flexShrink:0}},
+      h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}},
+        h("div",null,
+          h("div",{style:{fontSize:14,fontWeight:500,color:"#173404"}},s.name),
+          h("div",{style:{fontSize:11,color:"#3B6D11",marginTop:2}},s.sub)
+        ),
+        h("button",{onClick:onClose,style:{background:"none",border:"none",cursor:"pointer",fontSize:20,color:"#639922",lineHeight:1,padding:0,fontFamily:"inherit"}},"×")
+      ),
+      h("div",{style:{marginTop:7,display:"flex",gap:5,flexWrap:"wrap"}},
+        ...s.resp.map(r=>h("span",{key:r,className:"badge"},r))
+      )
+    ),
+    h("div",{style:{display:"flex",borderBottom:"1.5px solid #C0DD97",flexShrink:0}},
+      ...tabs.map(([id,lbl])=>h("button",{key:id,className:"tab-btn"+(tab===id?" on":""),onClick:()=>setTab(id)},lbl))
+    ),
+    h("div",{style:{padding:"13px 15px",flex:1,overflowY:"auto",display:"flex",flexDirection:"column",gap:12}},
+      tab==="overview"&&[
+        h("p",{key:"d",style:{margin:0,fontSize:12,color:"#173404",lineHeight:1.7}},s.desc),
+        s.notes&&h("div",{key:"n",className:"note"},s.notes),
+        h("div",{key:"ev"},
+          h("div",{className:"sec-lbl"},"Eventos registrables"),
+          h("div",null,...s.events.map((e,i)=>h("div",{key:i,style:{display:"flex",gap:7,alignItems:"flex-start",padding:"4px 0",borderBottom:"1px solid #EAF3DE"}},
+            h("div",{className:"dot"}),
+            h("span",{style:{fontSize:11,color:"#173404"}},e)
+          )))
+        ),
+        h("div",{key:"inf"},
+          h("div",{className:"sec-lbl"},"Información requerida"),
+          h("div",{style:{display:"flex",flexDirection:"column",gap:2}},
+            ...s.info.map((x,i)=>h("div",{key:i,style:{fontSize:11,color:"#3B6D11"}},"• "+x))
+          )
+        ),
+        s.sub2&&s.sub2.map((ss,si)=>h("div",{key:"ss"+si},
+          h("div",{className:"sec-lbl"},ss.t),
+          ...ss.items.map((item,ii)=>h("div",{key:ii,className:"item-row",style:{flexDirection:"column",gap:2}},
+            h("div",{style:{fontSize:11,fontWeight:500,color:"#27500A"}},item.l),
+            h("div",{style:{fontSize:10,color:"#3B6D11",lineHeight:1.5}},item.d)
+          ))
+        ))
+      ],
+      tab==="tasks"&&[
+        h("div",{key:"th",style:{fontSize:11,color:"#3B6D11"}},s.tasks.length+" tareas en esta etapa:"),
+        ...s.tasks.map((t,i)=>h("div",{key:i,className:"item-row"},
+          h("div",{style:{fontSize:11,fontWeight:500,color:"#3B6D11",minWidth:18}},i+1),
+          h("span",{style:{fontSize:11,color:"#173404",lineHeight:1.5}},t)
+        ))
+      ],
+      tab==="ai"&&h(AITab,{s,toggle,add,getSorted}),
+      tab==="tools"&&[
+        h("div",{key:"tl"},
+          h("div",{className:"sec-lbl"},"Herramientas actuales"),
+          h("div",{style:{display:"flex",flexWrap:"wrap",gap:5}},
+            ...s.tools.map((t,i)=>h("span",{key:i,className:"pill"},t))
+          )
+        ),
+        h("div",{key:"st"},
+          h("div",{className:"sec-lbl"},"Dónde se guarda la información"),
+          h("div",{className:"note",style:{fontWeight:500}},s.storage)
+        ),
+        h("div",{key:"rs"},
+          h("div",{className:"sec-lbl"},"Responsables"),
+          h("div",{style:{display:"flex",flexWrap:"wrap",gap:5}},
+            ...s.resp.map((r,i)=>h("span",{key:i,className:"badge"},r))
+          )
+        )
+      ]
+    )
+  );
+}
+
+function StageBtn({s,sel,onClick}){
+  return h("div",{className:"stage-btn"+(sel?" active":""),onClick,style:{borderColor:sel?"#3B6D11":s.kind==="complete"?"#27500A":s.kind==="source"?"#97C459":s.kind==="status"?"#97C459":s.kind==="action"?"#C0DD97":s.kind==="declined"?"#97C459":s.kind==="hold"?"#C0DD97":"#C0DD97"}},
+    h("div",{style:{fontSize:11,fontWeight:500,color:"#173404",lineHeight:1.3}},s.name),
+    h("div",{style:{fontSize:10,color:"#3B6D11",lineHeight:1.3}},s.sub),
+    h("div",{style:{fontSize:10,background:"#EAF3DE",color:"#27500A",padding:"2px 7px",borderRadius:10,border:"1px solid #C0DD97",fontWeight:500,alignSelf:"flex-start",marginTop:3}},s.ai.length+" IA →")
+  );
+}
+
+function PipelineView(){
+  const [flow,setFlow]=useState("investment");
+  const [sel,setSel]=useState(null);
+  const stages=flow==="investment"?iS:mS;
+  const invT=useAITasks([...iS,...sS]);
+  const monT=useAITasks(mS);
+  const spT=useAITasks(sS);
+  const aT=flow==="investment"?invT:monT;
+  const isSpecial=sel&&sS.find(s=>s.id===sel.id);
+  return h("div",{style:{display:"flex",flex:1,overflow:"hidden"}},
+    h("div",{style:{flex:1,overflowX:"auto",overflowY:"auto",padding:"14px 20px"}},
+      h("div",{style:{display:"flex",gap:7,marginBottom:12}},
+        ...[["investment","Investment Pipeline (8 etapas)"],["monitoring","Portfolio Monitoring (3 etapas)"]].map(([id,lbl])=>
+          h("button",{key:id,onClick:()=>{setFlow(id);setSel(null);},className:"cat-btn"+(flow===id?" on":"")},lbl)
+        )
+      ),
+      h("div",{style:{display:"flex",alignItems:"center",width:"max-content"}},
+        ...stages.map((s,i)=>h("div",{key:s.id,style:{display:"flex",alignItems:"center"}},
+          h(StageBtn,{s,sel:sel?.id===s.id,onClick:()=>setSel(sel?.id===s.id?null:s)}),
+          i<stages.length-1&&h("div",{style:{display:"flex",alignItems:"center",padding:"0 2px",flexShrink:0}},h(ArrowIcon))
+        ))
+      ),
+      flow==="investment"&&h("div",{style:{marginTop:16,display:"flex",flexDirection:"column",gap:7}},
+        h("div",{className:"sec-lbl"},"Estados especiales — pueden ocurrir desde cualquier etapa"),
+        h("div",{style:{display:"flex",gap:10,alignItems:"flex-start"}},
+          ...sS.map(s=>h(StageBtn,{key:s.id,s,sel:sel?.id===s.id,onClick:()=>setSel(sel?.id===s.id?null:s)})),
+          h("div",{style:{padding:"9px 12px",background:"#EAF3DE",border:"1px solid #C0DD97",borderLeft:"3px solid #3B6D11",borderRadius:8,fontSize:11,color:"#27500A",alignSelf:"center",maxWidth:300,lineHeight:1.6}},
+            h("span",{style:{fontWeight:500}},"Hold:")," follow-up cada 3–4 meses.",h("br"),
+            h("span",{style:{fontWeight:500}},"Declined:")," documentar motivo siempre. Puede reactivarse."
+          )
+        )
+      )
+    ),
+    sel&&h(Panel,{s:sel,onClose:()=>setSel(null),toggle:isSpecial?spT.toggle:aT.toggle,add:isSpecial?spT.add:aT.add,getSorted:isSpecial?spT.getSorted:aT.getSorted})
+  );
+}
+
+function ConceptsView(){
+  const [concepts,setConcepts]=useState(INIT_CONCEPTS);
+  const [search,setSearch]=useState("");
+  const [cat,setCat]=useState("Todos");
+  const [newTerm,setNewTerm]=useState("");
+  const [newDef,setNewDef]=useState("");
+  const [newCat,setNewCat]=useState("Generales");
+  const [nextId,setNextId]=useState(200);
+  const allCats=["Todos",...[...new Set(concepts.map(c=>c.cat))].sort()];
+  const filtered=concepts.filter(c=>{
+    const mc=cat==="Todos"||c.cat===cat;
+    const ms=!search||c.term.toLowerCase().includes(search.toLowerCase())||c.def.toLowerCase().includes(search.toLowerCase());
+    return mc&&ms;
+  }).sort((a,b)=>a.term.localeCompare(b.term));
+  const add=()=>{
+    if(!newTerm.trim()||!newDef.trim())return;
+    setConcepts(p=>[...p,{id:nextId,term:newTerm.trim(),cat:newCat,def:newDef.trim()}]);
+    setNextId(n=>n+1);setNewTerm("");setNewDef("");
+  };
+  const del=id=>setConcepts(p=>p.filter(c=>c.id!==id));
+  return h("div",{style:{flex:1,overflowY:"auto",padding:"16px 22px",display:"flex",flexDirection:"column",gap:14}},
+    h("input",{className:"search-inp",placeholder:"Buscar concepto o definición...",value:search,onChange:e=>setSearch(e.target.value)}),
+    h("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
+      ...allCats.map(c=>h("button",{key:c,className:"cat-btn"+(cat===c?" on":""),onClick:()=>setCat(c)},c))
+    ),
+    h("div",{style:{fontSize:11,color:"#639922"}},filtered.length+" conceptos"),
+    h("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:10}},
+      ...filtered.map(c=>h("div",{key:c.id,className:"concept-card"},
+        h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:6}},
+          h("div",{style:{fontSize:13,fontWeight:500,color:"#173404"}},c.term),
+          h("button",{className:"del-btn",onClick:()=>del(c.id)},"×")
+        ),
+        h("span",{className:"concept-tag"},c.cat),
+        h("div",{style:{fontSize:11,color:"#3B6D11",lineHeight:1.6,marginTop:4}},c.def)
+      ))
+    ),
+    h("div",{style:{background:"#EAF3DE",border:"1.5px solid #C0DD97",borderRadius:10,padding:"14px 16px",display:"flex",flexDirection:"column",gap:8,marginTop:4}},
+      h("div",{className:"sec-lbl"},"Agregar nuevo concepto"),
+      h("div",{style:{display:"flex",gap:8}},
+        h("input",{className:"add-inp",style:{flex:2},placeholder:"Término (ej: ARR)",value:newTerm,onChange:e=>setNewTerm(e.target.value)}),
+        h("select",{value:newCat,onChange:e=>setNewCat(e.target.value),style:{border:"1px solid #C0DD97",borderRadius:7,padding:"6px 9px",fontSize:11,color:"#27500A",background:"#fff",outline:"none",fontFamily:"inherit"}},
+          ...["Generales","SaaS","Fintech","Marketplace","Inversión","Mercado","Legal","Ecosistema","Operaciones","Logística"].map(c=>h("option",{key:c,value:c},c))
+        )
+      ),
+      h("textarea",{value:newDef,onChange:e=>setNewDef(e.target.value),placeholder:"Definición clara y concisa...",style:{border:"1px solid #C0DD97",borderRadius:7,padding:"7px 10px",fontSize:11,color:"#27500A",background:"#fff",outline:"none",resize:"vertical",minHeight:60,fontFamily:"inherit"}}),
+      h("button",{className:"add-btn",style:{alignSelf:"flex-start"},onClick:add},"+ Agregar concepto")
+    )
+  );
+}
+
+function ToolsView(){
+  const [open,setOpen]=useState(null);
+  const cats=[...new Set(TOOLS.map(t=>t.cat))];
+  return h("div",{style:{flex:1,overflowY:"auto",padding:"16px 22px",display:"flex",flexDirection:"column",gap:14}},
+    h("div",{style:{fontSize:12,color:"#3B6D11"}},"Herramientas que usa el equipo Tantauco. Haz clic en cualquiera para ver más detalles."),
+    ...cats.map(cat=>h("div",{key:cat},
+      h("div",{className:"sec-lbl",style:{marginBottom:8}},cat),
+      h("div",{style:{display:"flex",flexDirection:"column",gap:7}},
+        ...TOOLS.filter(t=>t.cat===cat).map(t=>h("div",{key:t.id,className:"tool-card"+(open===t.id?" open":""),onClick:()=>setOpen(open===t.id?null:t.id)},
+          h("div",{style:{display:"flex",alignItems:"center",gap:8}},
+            h("span",{style:{fontSize:20,lineHeight:1}},t.icon),
+            h("div",{style:{flex:1}},
+              h("div",{style:{fontSize:12,fontWeight:500,color:"#173404"}},t.name),
+              h("div",{style:{fontSize:11,color:"#3B6D11",marginTop:1}},t.desc)
+            ),
+            h(ChevronRight,{open:open===t.id})
+          ),
+          open===t.id&&h("div",{style:{display:"flex",flexDirection:"column",gap:10,marginTop:8,borderTop:"1px solid #C0DD97",paddingTop:8}},
+            h("div",null,
+              h("div",{className:"sec-lbl"},"¿Para qué lo usamos?"),
+              h("div",{style:{fontSize:11,color:"#173404",lineHeight:1.6}},t.uso)
+            ),
+            h("div",null,
+              h("div",{className:"sec-lbl"},"Funciones principales"),
+              h("div",{style:{display:"flex",flexDirection:"column",gap:4}},
+                ...t.features.map((f,i)=>h("div",{key:i,style:{display:"flex",gap:7,alignItems:"flex-start"}},
+                  h("div",{className:"dot",style:{marginTop:4}}),
+                  h("span",{style:{fontSize:11,color:"#3B6D11",lineHeight:1.5}},f)
+                ))
+              )
+            )
+          )
+        ))
+      )
+    ))
+  );
+}
+
+function App(){
+  const [section,setSection]=useState("pipeline");
+  const navs=[["pipeline","Proceso de inversión"],["concepts","Conceptos útiles"],["tools","Herramientas"]];
+  return h("div",{style:{display:"flex",flexDirection:"column",height:"100vh",overflow:"hidden",background:"#fff"}},
+    h("div",{style:{padding:"10px 20px 0",borderBottom:"1.5px solid #C0DD97",flexShrink:0,background:"#fff"}},
+      h("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}},
+        h("div",null,
+          h("div",{style:{fontSize:15,fontWeight:500,color:"#173404"}},"Tantauco VC · Manual de Operaciones"),
+          h("div",{style:{fontSize:11,color:"#3B6D11",marginTop:1}},"Proceso de inversión · Portfolio Monitoring · Conceptos · Herramientas")
+        ),
+        h("div",{style:{display:"flex",gap:6,alignItems:"center"}},
+          ...[{c:"#97C459",l:"Fuente / Estado"},{c:"#3B6D11",l:"Acción"},{c:"#27500A",l:"Completado"}].map(x=>
+            h("div",{key:x.l,style:{display:"flex",alignItems:"center",gap:4,fontSize:10,color:"#3B6D11"}},
+              h("div",{style:{width:8,height:8,background:x.c+"25",border:"1.5px solid "+x.c,borderRadius:2}}),
+              x.l
+            )
+          )
+        )
+      ),
+      h("div",{style:{display:"flex",gap:0,marginTop:8}},
+        ...navs.map(([id,lbl])=>h("button",{key:id,className:"nav-btn"+(section===id?" on":""),onClick:()=>setSection(id)},lbl))
+      )
+    ),
+    section==="pipeline"&&h(PipelineView),
+    section==="concepts"&&h(ConceptsView),
+    section==="tools"&&h(ToolsView)
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("app")).render(h(App,null));
+</script>
+</body>
+</html>
