@@ -5,119 +5,273 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tantauco VC · Manual de Operaciones</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════════
+   DESIGN TOKENS — Tantauco Bootcamp palette
+══════════════════════════════════════════════════════ */
+:root{
+  --cream:   #F2EDE3;
+  --cream2:  #EAE4D8;
+  --dark:    #1C3A2A;
+  --dark2:   #142D20;
+  --green:   #2D5A3D;
+  --green2:  #3B6D11;
+  --gold:    #C9A84C;
+  --gold2:   #B8972E;
+  --text:    #1C3A2A;
+  --text2:   #4A6355;
+  --text3:   #7A9585;
+  --border:  #D5CCBB;
+  --border2: #C4BAA8;
+  --white:   #FFFFFF;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{font-family:'DM Sans',system-ui,sans-serif;background:#0a1a0a;color:#173404}
-::-webkit-scrollbar{height:4px;width:4px}
-::-webkit-scrollbar-thumb{background:#3B6D11;border-radius:2px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:var(--text)}
+::-webkit-scrollbar{height:5px;width:5px}
+::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px;opacity:0.5}
+::-webkit-scrollbar-track{background:var(--cream2)}
 
-/* LANDING */
-#landing{height:100vh;overflow-y:auto;background:#0a1a0a;display:flex;flex-direction:column}
-.hero{padding:56px 64px 40px;border-bottom:1px solid #1c381c;display:flex;flex-direction:column;gap:12px}
-.hero-ey{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#5a9a3a;font-weight:500}
-.hero-t{font-family:'DM Serif Display',serif;font-size:56px;line-height:1.02;color:#e8f5d8;font-weight:400}
-.hero-t em{color:#97C459;font-style:normal}
-.hero-s{font-size:15px;color:#4a7a2a;font-weight:300;max-width:560px;line-height:1.65;margin-top:4px}
-.hero-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.chip{font-size:11px;color:#5a9a3a;background:#162816;border:1px solid #254525;border-radius:20px;padding:4px 13px}
+/* ══════════════════════════════════════════════════════
+   LANDING
+══════════════════════════════════════════════════════ */
+#landing{height:100vh;overflow-y:auto;background:var(--cream);display:flex;flex-direction:column}
+
+.hero{
+  background:var(--dark);
+  padding:60px 72px 56px;
+  display:flex;flex-direction:column;gap:16px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;right:-80px;top:-80px;
+  width:420px;height:420px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.hero::after{
+  content:"";position:absolute;right:120px;bottom:-120px;
+  width:280px;height:280px;border-radius:50%;
+  background:rgba(255,255,255,0.025);
+}
+.hero-ey{
+  font-size:11px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+}
+.hero-t{
+  font-family:'Playfair Display',serif;
+  font-size:58px;line-height:1.02;color:var(--cream);font-weight:400;
+  max-width:640px;
+}
+.hero-t em{color:var(--gold);font-style:italic}
+.hero-s{
+  font-size:16px;color:rgba(242,237,227,0.65);
+  font-weight:300;max-width:520px;line-height:1.7;
+}
+.hero-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.chip{
+  font-size:11px;color:rgba(242,237,227,0.8);
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:20px;padding:5px 14px;
+  display:flex;align-items:center;gap:6px;
+}
+.chip::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold)}
 
 /* MAIN CARDS */
-.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:36px 64px}
-.mc{border-radius:16px;border:1px solid #254525;cursor:pointer;transition:all 0.22s;overflow:hidden;position:relative;background:#111e11}
-.mc:hover{border-color:#5a9a3a;transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:40px 72px}
+.mc{
+  border-radius:16px;border:1.5px solid var(--border);
+  cursor:pointer;transition:all 0.22s;overflow:hidden;
+  position:relative;background:var(--white);
+}
+.mc:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 12px 40px rgba(28,58,42,0.12)}
 .mc:hover .mc-arr{opacity:1;transform:translateX(0)}
-.mc-bar{height:3px;background:linear-gradient(90deg,#2a5a0a,#7ab820)}
-.mc-b{padding:30px 32px 34px}
-.mc-n{font-family:'DM Serif Display',serif;font-size:52px;color:#1c3c1c;line-height:1;margin-bottom:14px}
-.mc-lbl{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#5a9a3a;margin-bottom:7px;font-weight:500}
-.mc-title{font-size:26px;font-weight:500;color:#e8f5d8;margin-bottom:10px;line-height:1.15}
-.mc-desc{font-size:13px;color:#4a7a2a;line-height:1.65;font-weight:300}
-.mc-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:18px}
-.mc-pill{font-size:10px;padding:3px 9px;border-radius:20px;background:#162816;border:1px solid #254525;color:#5a9a3a}
-.mc-arr{position:absolute;bottom:26px;right:26px;width:38px;height:38px;border-radius:50%;background:#3B6D11;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateX(-8px);transition:all 0.22s}
+.mc-bar{height:3px;background:linear-gradient(90deg,var(--dark),var(--green))}
+.mc-b{padding:32px 34px 36px}
+.mc-n{
+  font-family:'Playfair Display',serif;
+  font-size:54px;color:var(--cream2);line-height:1;margin-bottom:16px;
+}
+.mc-lbl{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500}
+.mc-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--dark);margin-bottom:10px;line-height:1.15}
+.mc-desc{font-size:14px;color:var(--text2);line-height:1.7;font-weight:300}
+.mc-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.mc-pill{font-size:11px;padding:4px 11px;border-radius:20px;background:var(--cream2);border:1px solid var(--border);color:var(--text2)}
+.mc-arr{
+  position:absolute;bottom:28px;right:28px;width:40px;height:40px;
+  border-radius:50%;background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateX(-10px);transition:all 0.22s;
+}
 
 /* SECONDARY */
-.sec-section{padding:0 64px 48px;display:flex;flex-direction:column;gap:16px}
-.sec-div{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#254525;display:flex;align-items:center;gap:14px}
-.sec-div::after{content:"";flex:1;height:1px;background:#1c381c}
-.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.sc{border-radius:11px;border:1px solid #1c381c;cursor:pointer;transition:all 0.18s;background:#0a1a0a;padding:20px 22px;display:flex;gap:14px;align-items:flex-start}
-.sc:hover{border-color:#3B6D11;background:#111e11}
-.sc-icon{width:40px;height:40px;border-radius:9px;background:#162816;border:1px solid #254525;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.sc-t{font-size:13px;font-weight:500;color:#b8dda0;margin-bottom:4px}
-.sc-d{font-size:11px;color:#3B6D11;line-height:1.55;font-weight:300}
+.sec-section{padding:0 72px 52px;display:flex;flex-direction:column;gap:18px}
+.sec-div{
+  font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text3);display:flex;align-items:center;gap:14px;
+}
+.sec-div::after{content:"";flex:1;height:1px;background:var(--border)}
+.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sc{
+  border-radius:12px;border:1.5px solid var(--border);
+  cursor:pointer;transition:all 0.18s;background:var(--white);
+  padding:22px 24px;display:flex;gap:16px;align-items:flex-start;
+}
+.sc:hover{border-color:var(--green);background:var(--cream);box-shadow:0 4px 16px rgba(28,58,42,0.07)}
+.sc-icon{
+  width:44px;height:44px;border-radius:10px;
+  background:var(--cream2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.sc-t{font-family:'Playfair Display',serif;font-size:17px;color:var(--dark);margin-bottom:5px;font-weight:400}
+.sc-d{font-size:12px;color:var(--text2);line-height:1.6;font-weight:300}
 
-/* FULL VIEW */
-#fullview{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;z-index:100}
-.fv-top{padding:0 22px;border-bottom:1.5px solid #C0DD97;background:#fff;flex-shrink:0;display:flex;align-items:stretch;gap:0}
-.fv-back{display:flex;align-items:center;gap:7px;padding:14px 18px 12px 0;margin-right:18px;border-right:1px solid #EAF3DE;cursor:pointer;color:#639922;font-size:12px;border-top:none;border-bottom:none;border-left:none;background:none;font-family:inherit;transition:color 0.1s}
-.fv-back:hover{color:#3B6D11}
-.fv-info{padding:12px 0;flex:1}
-.fv-ttl{font-size:15px;font-weight:500;color:#173404}
-.fv-sub{font-size:11px;color:#639922;margin-top:2px}
+/* ══════════════════════════════════════════════════════
+   FULL PIPELINE VIEW
+══════════════════════════════════════════════════════ */
+#fullview{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;z-index:100}
+.fv-top{
+  padding:0 24px;border-bottom:1.5px solid var(--border);
+  background:var(--white);flex-shrink:0;display:flex;align-items:stretch;
+}
+.fv-back{
+  display:flex;align-items:center;gap:8px;
+  padding:16px 20px 14px 0;margin-right:20px;
+  border-right:1.5px solid var(--cream2);
+  cursor:pointer;color:var(--green);font-size:13px;
+  border-top:none;border-bottom:none;border-left:none;
+  background:none;font-family:inherit;transition:color 0.1s;
+}
+.fv-back:hover{color:var(--dark)}
+.fv-info{padding:14px 0 12px;flex:1}
+.fv-ttl{font-family:'Playfair Display',serif;font-size:22px;color:var(--dark);font-weight:400}
+.fv-sub{font-size:12px;color:var(--text3);margin-top:3px}
+
+/* FLOW AREA */
 .flow-wrap{display:flex;flex:1;overflow:hidden}
-.flow-scroll{flex:1;overflow-x:auto;overflow-y:auto;padding:20px 24px}
-.row{display:flex;align-items:center;width:max-content}
-.sb{width:126px;min-width:126px;padding:10px 11px;border-radius:10px;cursor:pointer;border:1.5px solid #C0DD97;background:#fff;display:flex;flex-direction:column;gap:4px;transition:all 0.15s;text-align:left}
-.sb:hover{border-color:#639922;background:#EAF3DE}
-.sb.on{border-color:#3B6D11;background:#EAF3DE;box-shadow:0 0 0 3px #C0DD9748}
-.sb-n{font-size:11px;font-weight:500;color:#173404;line-height:1.3}
-.sb-s{font-size:10px;color:#3B6D11;line-height:1.3}
-.sb-ai{font-size:10px;background:#EAF3DE;color:#27500A;padding:2px 7px;border-radius:10px;border:1px solid #C0DD97;font-weight:500;align-self:flex-start;margin-top:2px}
-.arr-wrap{display:flex;align-items:center;padding:0 2px;flex-shrink:0}
-.sp-row{margin-top:16px;display:flex;flex-direction:column;gap:8px}
-.sp-lbl{font-size:10px;font-weight:500;color:#97C459;text-transform:uppercase;letter-spacing:0.06em}
-.sp-note{padding:9px 13px;background:#EAF3DE;border:1px solid #C0DD97;border-left:3px solid #3B6D11;border-radius:8px;font-size:11px;color:#27500A;max-width:300px;line-height:1.6}
+.flow-scroll{flex:1;overflow-x:auto;overflow-y:auto;padding:28px 28px 28px}
 
-/* DETAIL PANEL */
-.dp{width:368px;min-width:368px;border-left:1.5px solid #C0DD97;background:#fff;display:flex;flex-direction:column;height:100%}
-.dp-h{padding:13px 15px 10px;border-bottom:1.5px solid #C0DD97;background:#EAF3DE;flex-shrink:0}
-.dp-n{font-size:14px;font-weight:500;color:#173404}
-.dp-su{font-size:11px;color:#3B6D11;margin-top:2px}
-.dp-x{background:none;border:none;cursor:pointer;font-size:20px;color:#639922;padding:0;font-family:inherit;line-height:1}
-.dp-tabs{display:flex;border-bottom:1.5px solid #C0DD97;flex-shrink:0}
-.dt{flex:1;padding:7px 3px;font-size:10px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:#97C459;font-family:inherit;transition:all 0.1s}
-.dt.on{color:#173404;border-bottom-color:#3B6D11;font-weight:500}
-.dp-body{padding:13px 15px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+/* STAGE CARDS — larger */
+.stages-row{display:flex;align-items:flex-start;flex-wrap:wrap;gap:16px;width:100%}
+.sb{
+  width:180px;min-width:180px;
+  padding:16px 16px 14px;border-radius:12px;
+  cursor:pointer;border:1.5px solid var(--border);
+  background:var(--white);display:flex;flex-direction:column;gap:6px;
+  transition:all 0.16s;text-align:left;
+  box-shadow:0 2px 8px rgba(28,58,42,0.04);
+}
+.sb:hover{border-color:var(--green);background:var(--cream);box-shadow:0 4px 16px rgba(28,58,42,0.1)}
+.sb.on{border-color:var(--dark);background:var(--cream);box-shadow:0 0 0 3px rgba(28,58,42,0.1)}
+.sb-kind{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:2px}
+.sb-n{font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:var(--dark);line-height:1.2}
+.sb-s{font-size:11px;color:var(--text2);line-height:1.4;margin-top:2px}
+.sb-ai{
+  font-size:10px;background:var(--cream2);color:var(--text2);
+  padding:3px 8px;border-radius:20px;border:1px solid var(--border);
+  font-weight:500;align-self:flex-start;margin-top:4px;
+}
+.arr-wrap{display:flex;align-items:center;padding:0 4px;flex-shrink:0;align-self:center;margin-top:-4px}
 
-/* SHARED */
-.badge{font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid #C0DD97;background:#EAF3DE;color:#27500A;font-weight:500;white-space:nowrap}
-.pill{font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid #C0DD97;background:#EAF3DE;color:#3B6D11}
-.slbl{font-size:10px;font-weight:500;color:#639922;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px}
-.irow{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:8px;background:#EAF3DE;border:1px solid #C0DD97}
-.dot{width:6px;height:6px;min-width:6px;border-radius:50%;background:#3B6D11;margin-top:4px;flex-shrink:0}
-.nbox{padding:8px 10px;background:#fff;border:1px solid #97C459;border-left:3px solid #3B6D11;border-radius:7px;font-size:11px;color:#27500A;line-height:1.5}
-.ccat{font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid #C0DD97;background:#fff;color:#3B6D11;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all 0.1s}
-.ccat.on{background:#3B6D11;color:#EAF3DE;border-color:#3B6D11}
-.sinp{width:100%;border:1px solid #C0DD97;border-radius:8px;padding:8px 12px;font-size:12px;outline:none;background:#fff;color:#27500A;font-family:inherit}
-.sinp:focus{border-color:#3B6D11}
-.sinp::placeholder{color:#97C459}
-.ainp{flex:1;border:1px solid #C0DD97;border-radius:7px;padding:6px 9px;font-size:11px;outline:none;background:#fff;color:#27500A;font-family:inherit}
-.ainp:focus{border-color:#3B6D11}
-.ainp::placeholder{color:#97C459}
-.abtn{background:#3B6D11;color:#EAF3DE;border:none;border-radius:7px;padding:6px 11px;font-size:11px;cursor:pointer;font-weight:500;font-family:inherit}
-.abtn:hover{background:#27500A}
-.dbtn{background:none;border:none;cursor:pointer;color:#97C459;font-size:15px;padding:0 4px;line-height:1;flex-shrink:0}
-.dbtn:hover{color:#E24B4A}
-.crow{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:7px;cursor:pointer;border:1px solid #C0DD97;background:#fff;transition:all 0.12s}
-.crow:hover{background:#EAF3DE;border-color:#639922}
-.crow.done{background:#EAF3DE;opacity:0.65}
-.cbox{width:15px;height:15px;min-width:15px;border-radius:4px;border:1.5px solid #97C459;background:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;flex-shrink:0}
-.cbox.on{background:#3B6D11;border-color:#3B6D11}
-.conc{background:#fff;border:1px solid #C0DD97;border-radius:9px;padding:11px 13px;display:flex;flex-direction:column;gap:4px}
-.ctag{font-size:10px;padding:2px 7px;border-radius:20px;background:#EAF3DE;border:1px solid #C0DD97;color:#639922;align-self:flex-start}
-.tcrd{background:#fff;border:1.5px solid #C0DD97;border-radius:10px;padding:13px 14px;cursor:pointer;transition:border-color 0.12s;margin-bottom:7px}
-.tcrd:hover{border-color:#639922}
-.tcrd.open{border-color:#3B6D11;background:#EAF3DE}
-.arow{display:flex;gap:6px;align-items:center}
-#secpage{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;z-index:100}
-.sph{padding:14px 22px;border-bottom:1.5px solid #C0DD97;background:#EAF3DE;flex-shrink:0;display:flex;align-items:center;gap:14px}
-.spback{background:none;border:none;cursor:pointer;color:#3B6D11;font-size:12px;font-family:inherit;display:flex;align-items:center;gap:6px}
-.spback:hover{color:#173404}
-.sptitle{font-size:15px;font-weight:500;color:#173404}
-.spbody{flex:1;overflow-y:auto;padding:20px 28px;display:flex;flex-direction:column;gap:16px}
+/* SPECIALS */
+.sp-section{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.sp-lbl{font-size:10px;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em}
+.sp-cards{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.sp-note{
+  padding:12px 16px;background:var(--dark);border-radius:10px;
+  font-size:12px;color:rgba(242,237,227,0.85);max-width:320px;line-height:1.6;
+  align-self:center;
+}
+.sp-note strong{color:var(--gold)}
+
+/* ══════════════════════════════════════════════════════
+   DETAIL PANEL
+══════════════════════════════════════════════════════ */
+.dp{
+  width:400px;min-width:400px;
+  border-left:1.5px solid var(--border);
+  background:var(--white);display:flex;flex-direction:column;
+  height:100%;
+}
+.dp-h{
+  padding:18px 18px 14px;
+  border-bottom:1.5px solid var(--border);
+  background:var(--dark);flex-shrink:0;
+}
+.dp-n{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);font-weight:400}
+.dp-su{font-size:12px;color:rgba(242,237,227,0.6);margin-top:3px}
+.dp-x{
+  background:none;border:none;cursor:pointer;
+  font-size:22px;color:rgba(242,237,227,0.5);
+  padding:0;font-family:inherit;line-height:1;
+  transition:color 0.1s;
+}
+.dp-x:hover{color:var(--cream)}
+.dp-badges{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.dp-badge{
+  font-size:10px;padding:3px 10px;border-radius:20px;
+  background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.4);
+  color:var(--gold);font-weight:500;white-space:nowrap;
+}
+.dp-tabs{display:flex;border-bottom:1.5px solid var(--border);flex-shrink:0;background:var(--cream)}
+.dt{
+  flex:1;padding:10px 4px;font-size:11px;background:none;
+  border:none;border-bottom:2px solid transparent;
+  cursor:pointer;color:var(--text3);font-family:inherit;transition:all 0.12s;
+}
+.dt.on{color:var(--dark);border-bottom-color:var(--dark);font-weight:500}
+.dt:hover{color:var(--green)}
+.dp-body{padding:16px 18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+
+/* ══════════════════════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════════════════════ */
+.badge{font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:var(--cream2);color:var(--text2);font-weight:500;white-space:nowrap}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--cream2);color:var(--text2)}
+.slbl{font-size:10px;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:7px}
+.irow{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:9px;background:var(--cream);border:1px solid var(--border)}
+.dot{width:6px;height:6px;min-width:6px;border-radius:50%;background:var(--green);margin-top:5px;flex-shrink:0}
+.nbox{padding:10px 14px;background:var(--cream);border:1px solid var(--border2);border-left:3px solid var(--dark);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6}
+.ccat{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;transition:all 0.1s}
+.ccat.on{background:var(--dark);color:var(--cream);border-color:var(--dark)}
+.ccat:hover{border-color:var(--green)}
+.sinp{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 14px;font-size:13px;outline:none;background:var(--white);color:var(--text);font-family:inherit}
+.sinp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(45,90,61,0.1)}
+.sinp::placeholder{color:var(--text3)}
+.ainp{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;outline:none;background:var(--white);color:var(--text);font-family:inherit}
+.ainp:focus{border-color:var(--green)}
+.ainp::placeholder{color:var(--text3)}
+.abtn{background:var(--dark);color:var(--cream);border:none;border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;font-weight:500;font-family:inherit;transition:background 0.1s}
+.abtn:hover{background:var(--dark2)}
+.dbtn{background:none;border:none;cursor:pointer;color:var(--border2);font-size:16px;padding:0 4px;line-height:1;flex-shrink:0;transition:color 0.1s}
+.dbtn:hover{color:#c0392b}
+.crow{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);transition:all 0.12s}
+.crow:hover{background:var(--cream);border-color:var(--green)}
+.crow.done{background:var(--cream);opacity:0.6}
+.cbox{width:17px;height:17px;min-width:17px;border-radius:5px;border:1.5px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;margin-top:1px;flex-shrink:0;transition:all 0.12s}
+.cbox.on{background:var(--dark);border-color:var(--dark)}
+.conc{background:var(--white);border:1.5px solid var(--border);border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;transition:border-color 0.12s}
+.conc:hover{border-color:var(--green)}
+.ctag{font-size:10px;padding:3px 9px;border-radius:20px;background:var(--cream2);border:1px solid var(--border);color:var(--text2);align-self:flex-start}
+.tcrd{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all 0.12s;margin-bottom:10px}
+.tcrd:hover{border-color:var(--green);box-shadow:0 4px 14px rgba(28,58,42,0.07)}
+.tcrd.open{border-color:var(--dark);background:var(--cream)}
+.arow{display:flex;gap:8px;align-items:center}
+#secpage{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;z-index:100}
+.sph{padding:16px 28px;border-bottom:1.5px solid var(--border);background:var(--dark);flex-shrink:0;display:flex;align-items:center;gap:16px}
+.spback{background:none;border:none;cursor:pointer;color:rgba(242,237,227,0.7);font-size:13px;font-family:inherit;display:flex;align-items:center;gap:7px;transition:color 0.1s}
+.spback:hover{color:var(--cream)}
+.sptitle{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);font-weight:400}
+.spbody{flex:1;overflow-y:auto;padding:28px 36px;display:flex;flex-direction:column;gap:20px}
+
+/* ══════════════════════════════════════════════════════
+   AI CHECKLIST
+══════════════════════════════════════════════════════ */
+.ai-prog{padding:10px 14px;background:var(--dark);border-radius:8px;display:flex;gap:10px;align-items:center;margin-bottom:4px}
+.ai-prog-bar{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;width:80px}
+.ai-prog-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.3s}
 </style>
 </head>
 <body>
@@ -153,7 +307,7 @@ const CONCEPTS=[
 {id:12,term:"Lead Investor",cat:"Inversión",def:"Inversor principal que aporta el mayor capital y negocia todos los términos de una ronda. Actúa como ancla de confianza."},
 {id:13,term:"Cap Table",cat:"Inversión",def:"Tabla de capitalización. Muestra la estructura de propiedad: quién posee qué porcentaje de acciones y a qué precio."},
 {id:14,term:"CAC",cat:"SaaS",def:"Customer Acquisition Cost. Costo promedio de adquirir un nuevo cliente, incluyendo marketing y ventas."},
-{id:15,term:"Aceleradora",cat:"Ecosistema",def:"Organización que proporciona capital semilla, mentoria y redes de contacto para startups en etapa temprana durante 3 a 6 meses. Ej: YC, Platanus, StartupChile."},
+{id:15,term:"Aceleradora",cat:"Ecosistema",def:"Organización que proporciona capital semilla, mentoría y redes de contacto para startups en etapa temprana durante 3 a 6 meses. Ej: YC, Platanus, StartupChile."},
 {id:16,term:"Burn Rate",cat:"Generales",def:"Cuánto dinero en efectivo gasta una startup cada mes. Net Burn = Gasto total mensual menos los ingresos mensuales."},
 {id:17,term:"Notas Convertibles",cat:"Inversión",def:"Instrumentos de deuda que se convierten en acciones en una futura ronda, generalmente con un descuento o valuation cap."},
 {id:18,term:"Vesting",cat:"Inversión",def:"Proceso por el cual los founders o empleados adquieren progresivamente el derecho de propiedad sobre sus acciones a lo largo del tiempo."},
@@ -182,23 +336,23 @@ const CONCEPTS=[
 ];
 
 const iS=[
-{id:"scouting",name:"Scouting",sub:"Startups a contactar",kind:"source",desc:"Primera etapa del pipeline. Startups identificadas que queremos contactar. El trabajo principal de los analistas: búsqueda proactiva y contacto en frío a founders. Se espera una actitud proactiva en la búsqueda de oportunidades y en optimizar el tiempo y las tareas manuales.",tools:["Harmonic (búsqueda + GPT mode)","LinkedIn","Gmail","Plataforma Tantauco","DF+ / DFmás","Clay / Apollo (pendiente)"],storage:"Plataforma Tantauco › Scouting",resp:["Analyst"],info:["Nombre empresa","País","Sector / vertical","Etapa de financiamiento","Fuente de origen","URL web / LinkedIn","Email o contacto del founder","Descripción y perfil básico de la startup"],notes:"Thesis fit objetivo: Pre-Seed a Serie A · LATAM · SaaS, Fintech y Marketplace. Fuentes históricas: Red propia 34% · VCs 17% · Co-inv 13% · LP 8% · Emprendedor 6.5% · Eventos 5%",events:["Startup identificada en Harmonic","Startup encontrada en DF+ / noticia","Startup de batch / competencia / evento","Startup compartida por otro fondo VC","Startup contactada por LinkedIn","Startup contactada por email","Respuesta recibida del founder","Sin respuesta → follow-up D+7","Founder declina → Declined","Founder acepta reunión → Screening"],tasks:["Buscar startups en Harmonic (GPT mode) con thesis fit","Revisar DF+ semanalmente e identificar startups en noticias","Revisar nuevas batches y competencias relevantes al publicarse","Preparar mensaje de contacto personalizado según sector y etapa","Registrar startup en Plataforma Tantauco con fuente de origen","Hacer seguimiento: follow-up si no hay respuesta en 7 días","Registrar resultado del contacto en Plataforma Tantauco"],sub2:[{t:"Fuentes de búsqueda activa",items:[{l:"Harmonic",d:"Búsqueda por criterios (país, sector, etapa) + GPT mode. Extracción de correos de founders."},{l:"DF+ / DFmás",d:"Revisión semanal de noticias de startups LATAM. Pendiente: automatización N8N con resumen semanal."},{l:"Batches y eventos",d:"YC, Platanus, StartupChile, HubSpark, Demo Days. Al publicarse nueva batch, revisar startups seleccionadas."},{l:"LinkedIn / Email",d:"Búsqueda manual de founders. Pendiente: Clay/Apollo para automatizar."}]},{t:"Reuniones con otros fondos VC (cada 2 meses)",items:[{l:"Política de intercambio",d:"Solo se comparten startups que ya NO están siendo analizadas activamente. Nunca startups en pipeline activo."},{l:"Prep automática",d:"PENDIENTE: Automatización previa a cada reunión que investiga la última inversión del otro fondo y noticias de su portfolio."}]}],ai:["🔴 PENDIENTE · Automatización semanal (N8N) que busca noticias de startups LATAM desde DF+, TechCrunch LATAM y Contxto","🔴 PENDIENTE · Scraper de correos + automatización de contacto en frío via Clay o Apollo integrado con Gmail","🔴 PENDIENTE · Uso sistemático del modo GPT de Harmonic para obtener startups y correos de founders","🔴 PENDIENTE · Lead scoring automático por thesis fit antes de contactar","🔴 PENDIENTE · Automatización de follow-up con N8N o Claude Cowork si no hay respuesta en 7 días","🔴 PENDIENTE · Prep automática previa a reuniones con otros fondos VC"]},
-{id:"screening",name:"Screening",sub:"Primera reunión realizada",kind:"status",desc:"Una startup pasa a Screening cuando el founder aceptó reunirse. El analista realiza la primera reunión, toma notas y completa el Overview en Plataforma Tantauco. Este Overview es el requisito mínimo para presentar la startup en la reunión semanal del equipo. Sin Overview completo no se puede presentar.",tools:["Google Meet","Gmail","Granola","Plataforma Tantauco"],storage:"Plataforma Tantauco › Screening",resp:["Analyst"],info:["Country + Founded + Website + LinkedIn + Harmonic link","Descripción del negocio","Target Customer","Revenue Model","Go To Market","Categories, Verticals, Industries, Business Models","Notas de la primera reunión","Métricas y datos adicionales disponibles"],notes:"REQUISITO para reunión semanal: Overview completo en Plataforma Tantauco. El Overview permite a cualquier miembro del equipo hacerse una idea inicial clara del negocio sin haber estado en la reunión.",events:["Primera reunión agendada","Primera reunión realizada","Transcripción generada en Granola","Overview completado en Plataforma Tantauco (requisito)","Presentada en reunión semanal del equipo","Aprobada por el equipo → Internal Committee","Rechazada por el equipo → Declined","Más info requerida → analista investiga y vuelve","Sin suficiente interés → Hold"],tasks:["Confirmar la reunión y enviar el invite por Gmail","Realizar la reunión y tomar notas activamente","Verificar que Granola grabó y transcribió correctamente la reunión","Completar el Overview obligatorio en Plataforma Tantauco","Agregar toda la información adicional disponible: métricas, equipo, cap table","Preparar una presentación breve para la reunión semanal del equipo","Presentar la startup al equipo y documentar la decisión en Plataforma Tantauco"],ai:["🔴 PENDIENTE · Auto-rellenado del Overview en Plataforma Tantauco desde la transcripción de Granola con N8N o Claude Cowork","🔴 PENDIENTE · Extracción automática de métricas clave desde la transcripción + web scraping de la startup"]},
-{id:"ic",name:"Internal Committee",sub:"Análisis mayor + data room",kind:"status",desc:"Una startup llega a Internal Committee cuando el equipo la aprobó en la reunión semanal de Screening. El analista le escribe al founder para expresar interés y solicitar más información — idealmente un Data Room. Se profundiza el análisis y se prepara una presentación en Plataforma Tantauco para la siguiente reunión semanal.",tools:["Gmail","Granola","Plataforma Tantauco","Google Docs"],storage:"Plataforma Tantauco › Internal Committee",resp:["Analyst"],info:["Data Room o info adicional del founder","Análisis de los puntos que llamaron la atención en Screening","Análisis de mercado (TAM/SAM/SOM)","Análisis del equipo fundador","Modelo de negocio y financials básicos"],notes:"El análisis se enfoca en los puntos específicos que generaron interés en Screening. No es un due diligence completo.",events:["Startup aprobada en reunión semanal → entra a IC","Email enviado al founder solicitando Data Room","Data Room o información adicional recibida","Análisis mayor completado","Presentada en reunión semanal (análisis mayor)","Partners solicitan segunda reunión → Evaluación","Equipo decide declinar → Declined","Buen deal pero mal timing → Hold"],tasks:["Escribir email al founder expresando interés y solicitando Data Room","Analizar los puntos específicos que llamaron la atención en Screening","Revisar Data Room o info adicional recibida","Completar análisis de mercado básico (TAM/SAM/SOM)","Investigar equipo fundador: LinkedIn, Harmonic, referencias disponibles","Preparar el análisis mayor y la presentación directamente en Plataforma Tantauco","Presentar al equipo en reunión semanal y documentar la decisión"],ai:["🔴 PENDIENTE · Análisis automático de documentos del Data Room con IA","🔴 PENDIENTE · Generación automática del análisis de mercado (TAM/SAM/SOM) con datos en tiempo real","🔴 PENDIENTE · Template de email de solicitud de Data Room personalizado por sector"]},
-{id:"eval",name:"Evaluación",sub:"Segunda reunión — dupla asignada",kind:"status",desc:"Los Partners solicitan la segunda reunión. El deal se asigna a una dupla Analyst + Partner. Idas y vueltas de Q&A con el founder. Parte clave: buscar referencias del equipo fundador, referencias del producto con clientes reales y probar el producto directamente cuando sea posible.",tools:["Google Meet","Gmail","Granola","Plataforma Tantauco","Data Room"],storage:"Plataforma Tantauco › Evaluación",resp:["Analyst","Partner"],info:["Data Room completo","P&L + proyecciones financieras","KPIs históricos y actuales","Cap table","Contratos clave","Respuestas Q&A con el founder","Referencias del equipo fundador","Referencias del producto y de clientes"],notes:"Esta etapa puede durar semanas. La señal de avance es la indicación explícita del Partner de armar el Memo. La Plataforma Tantauco permite registrar reuniones indicando si es primera o segunda reunión y pegar la transcripción y notas.",events:["Partners solicitan segunda reunión → startup entra a Evaluación","Dupla Analyst + Partner asignada al deal","Segunda reunión realizada","Q&A enviado al founder","Respuesta Q&A recibida","Referencias del equipo y producto consultadas","Análisis de Data Room completado","Indicación del Partner de armar Investment Memo → Memo","Decisión de declinar → Declined","Decisión de esperar → Hold"],tasks:["Agendar la segunda reunión con los founders (Partner + Analyst)","Realizar la segunda reunión y verificar que Granola transcribió correctamente","Enviar Q&A al founder post-reunión con las dudas pendientes","Analizar las respuestas del founder y revisar el Data Room completo","Buscar y consultar referencias del equipo fundador","Buscar referencias del producto con clientes o usuarios del segmento objetivo","Probar el producto directamente cuando sea posible","Documentar avances, conclusiones y dudas pendientes en Plataforma Tantauco","Recibir indicación del Partner para proceder con el Investment Memo"],ai:["🔴 PENDIENTE · Benchmark automático de métricas vs. comparables en LATAM","🔴 PENDIENTE · Auto-rellenado de Plataforma Tantauco desde Granola: la plataforma permite crear reuniones con nombre y participantes y pegar la transcripción para que un agente la estructure automáticamente"]},
-{id:"memo",name:"Investment Memo",sub:"Analista redacta el memo",kind:"action",desc:"El analista recibe la indicación del Partner de proceder con el memo. Se redacta en Notion, en la carpeta de Investment Memos, donde están todos los memos anteriores y el template base. El memo debe ser conciso, respetar el formato y generar una narrativa clara.",tools:["Notion (carpeta Investment Memos)","Granola (transcripciones)","Plataforma Tantauco","Gmail"],storage:"Notion › Carpeta Investment Memos",resp:["Analyst","Partner"],info:["Toda la info acumulada en Evaluación","Transcripciones de Granola de todas las reuniones","Data Room completo","Q&A respondido por el founder","Memos anteriores como referencia de formato y estilo"],notes:"Estructura del memo: 1) Executive Summary 2) Equipo 3) Solución 4) Oportunidad de mercado 5) Análisis financiero 6) Oportunidad de inversión.",events:["Indicación del Partner de proceder con el memo","Borrador completado por el analista","Memo enviado al Partner para revisión","Observaciones del Partner incorporadas","Memo aprobado por el Partner → External Committee"],tasks:["Recibir indicación explícita del Partner de proceder con el memo","Revisar memos anteriores en Notion como referencia de formato y calidad","Reunir todos los insumos: transcripciones de Granola, Data Room, Q&A","Redactar el memo completo en Notion siguiendo el template estándar","Asegurar que el memo tenga una narrativa clara y un hilo conductor","Enviar el borrador al Partner para revisión","Incorporar los comentarios y correcciones del Partner"],ai:["🔴 PENDIENTE · Generación automática del borrador del memo desde transcripciones de Granola + datos de Plataforma Tantauco con Claude Cowork o N8N","🔴 PENDIENTE · Sección de mercado auto-generada con datos en tiempo real usando búsqueda web"]},
-{id:"ec",name:"External Committee",sub:"Comité externo — decisión final",kind:"status",desc:"Comité externo donde los Partners presentan la startup junto a expertos del sector. Se decide definitivamente si se aprueba o rechaza el cheque. El analista no participa en esta reunión.",tools:["Google Meet","Notion (memo)","Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco",resp:["Partner"],info:["Investment Memo aprobado","Expertos del sector confirmados","Presentación ejecutiva del deal","Risk assessment final"],notes:"Participantes: Partners del fondo · Venture Partner (requerido) · Advisor del sector.",events:["Expertos del comité identificados y confirmados","Comité agendado","Investment Memo enviado a los miembros","External Committee realizado","Feedback de expertos documentado","Aprobado → Due Diligence Legal","Rechazado → Declined"],tasks:["El Partner coordina el comité y gestiona la logística","El Partner envía el Investment Memo a todos los miembros con anticipación","El Partner prepara la presentación ejecutiva del deal","Los Partners documentan el feedback y la decisión en Plataforma Tantauco"],ai:[]},
-{id:"dd",name:"Due Diligence Legal",sub:"Partner + Abogados",kind:"action",desc:"Due diligence legal completa liderada por el Partner con apoyo de abogados externos. Se verifica que la estructura legal no tenga impedimentos para la inversión. Este proceso ocurre entre los abogados, los founders y los Partners.",tools:["Abogados externos","Data Room","Gmail","Google Drive"],storage:"Plataforma Tantauco + Google Drive",resp:["Partner","Abogados"],info:["Documentos corporativos y acta de constitución","Cap table legal completa","Contratos laborales clave","Propiedad intelectual (IP)","Contratos con clientes y proveedores clave","Litigios y contingencias pendientes","Cumplimiento regulatorio"],notes:"¿Red flags bloqueantes? → Declined · ¿Condiciones negociables? → resolver y cerrar · ¿Sin issues? → Inversión.",events:["Abogados externos contratados","DD legal iniciada","Informe de DD recibido","Red flag legal identificado","Condiciones negociadas y resueltas","DD completada sin issues → proceder al cierre"],tasks:["Contratar o coordinar los abogados externos","Compartir el Data Room con los abogados","Hacer seguimiento al avance de la DD","Revisar el informe de DD entregado por los abogados","Negociar condiciones si es necesario","Documentar conclusiones y decisión final en Plataforma Tantauco"],ai:[]},
-{id:"invested",name:"Invested",sub:"Cierre + portfolio",kind:"complete",desc:"Una vez completada la Due Diligence Legal, se procede al cierre formal. Firma de documentos, transferencia de fondos y registro oficial. La startup queda registrada como invertida en Plataforma Tantauco e inicia el Portfolio Monitoring.",tools:["Abogados","DocuSign / Firma física","Gmail","Plataforma Tantauco"],storage:"Plataforma Tantauco",resp:["Partner","Abogados","Analyst"],info:["Term sheet firmado","Documentos de cierre firmados (SHA, SPA u otros)","Confirmación de transferencia de fondos","Monto invertido, valoración y % equity","Vehículo e instrumento de inversión","Cap table post-inversión","Fecha de cierre"],notes:"El cierre es liderado por el Partner y los abogados. El analista apoya en el registro en Plataforma Tantauco y prepara el mini-memo resumen para los LPs.",events:["Term sheet negociado y firmado","Documentos de cierre preparados por abogados","Documentos firmados por ambas partes","Transferencia de fondos realizada","Cierre legal confirmado","Startup marcada como Invested en Plataforma Tantauco","LPs notificados","Startup ingresa al Portfolio Monitoring"],tasks:["Firma de documentos de cierre","Transferencia de fondos","Confirmar cierre legal con abogados","Actualizar el estado a Invested en Plataforma Tantauco con todos los datos del cierre","Armar un mini-memo resumen de la inversión para enviar a los LPs","Iniciar el proceso de Portfolio Monitoring (onboarding)"],ai:["🔴 PENDIENTE · Generación automática del mini-memo resumen para LPs a partir de los datos del Investment Memo y la Plataforma Tantauco"]},
+{id:"scouting",name:"Scouting",sub:"Startups a contactar",kind:"Fuente",desc:"Primera etapa del pipeline. Startups identificadas que queremos contactar. El trabajo principal de los analistas: búsqueda proactiva y contacto en frío a founders. Se espera una actitud proactiva en la búsqueda de oportunidades y en optimizar el tiempo y las tareas manuales.",tools:["Harmonic (búsqueda + GPT mode)","LinkedIn","Gmail","Plataforma Tantauco","DF+ / DFmás","Clay / Apollo (pendiente)"],storage:"Plataforma Tantauco › Scouting",resp:["Analyst"],info:["Nombre empresa","País","Sector / vertical","Etapa de financiamiento","Fuente de origen","URL web / LinkedIn","Email o contacto del founder","Descripción y perfil básico de la startup"],notes:"Thesis fit objetivo: Pre-Seed a Serie A · LATAM · SaaS, Fintech y Marketplace. Fuentes históricas: Red propia 34% · VCs 17% · Co-inv 13% · LP 8% · Emprendedor 6.5% · Eventos 5%",events:["Startup identificada en Harmonic","Startup encontrada en DF+ / noticia","Startup de batch / competencia / evento","Startup compartida por otro fondo VC","Startup contactada por LinkedIn","Startup contactada por email","Respuesta recibida del founder","Sin respuesta → follow-up D+7","Founder declina → Declined","Founder acepta reunión → Screening"],tasks:["Buscar startups en Harmonic (GPT mode) con thesis fit","Revisar DF+ semanalmente e identificar startups en noticias","Revisar nuevas batches y competencias relevantes al publicarse","Preparar mensaje de contacto personalizado según sector y etapa","Registrar startup en Plataforma Tantauco con fuente de origen","Hacer seguimiento: follow-up si no hay respuesta en 7 días","Registrar resultado del contacto en Plataforma Tantauco"],sub2:[{t:"Fuentes de búsqueda activa",items:[{l:"Harmonic",d:"Búsqueda por criterios (país, sector, etapa) + GPT mode. Extracción de correos de founders."},{l:"DF+ / DFmás",d:"Revisión semanal de noticias de startups LATAM. Pendiente: automatización N8N con resumen semanal."},{l:"Batches y eventos",d:"YC, Platanus, StartupChile, HubSpark, Demo Days. Al publicarse nueva batch, revisar startups seleccionadas."},{l:"LinkedIn / Email",d:"Búsqueda manual de founders. Pendiente: Clay/Apollo para automatizar."}]},{t:"Reuniones con otros fondos VC (cada 2 meses)",items:[{l:"Política de intercambio",d:"Solo se comparten startups que ya NO están siendo analizadas activamente. Nunca startups en pipeline activo."},{l:"Prep automática",d:"PENDIENTE: Automatización previa a cada reunión que investiga la última inversión del otro fondo y noticias de su portfolio."}]}],ai:["🔴 PENDIENTE · Automatización semanal (N8N) que busca noticias de startups LATAM desde DF+, TechCrunch LATAM y Contxto","🔴 PENDIENTE · Scraper de correos + automatización de contacto en frío via Clay o Apollo integrado con Gmail","🔴 PENDIENTE · Uso sistemático del modo GPT de Harmonic para obtener startups y correos de founders","🔴 PENDIENTE · Lead scoring automático por thesis fit antes de contactar","🔴 PENDIENTE · Automatización de follow-up con N8N o Claude Cowork si no hay respuesta en 7 días","🔴 PENDIENTE · Prep automática previa a reuniones con otros fondos VC"]},
+{id:"screening",name:"Screening",sub:"Primera reunión realizada",kind:"Estado",desc:"Una startup pasa a Screening cuando el founder aceptó reunirse. El analista realiza la primera reunión, toma notas y completa el Overview en Plataforma Tantauco. Este Overview es el requisito mínimo para presentar la startup en la reunión semanal del equipo. Sin Overview completo no se puede presentar.",tools:["Google Meet","Gmail","Granola","Plataforma Tantauco"],storage:"Plataforma Tantauco › Screening",resp:["Analyst"],info:["Country + Founded + Website + LinkedIn + Harmonic link","Descripción del negocio","Target Customer","Revenue Model","Go To Market","Categories, Verticals, Industries, Business Models","Notas de la primera reunión","Métricas y datos adicionales disponibles"],notes:"REQUISITO para reunión semanal: Overview completo en Plataforma Tantauco. El Overview permite a cualquier miembro del equipo hacerse una idea inicial clara del negocio sin haber estado en la reunión.",events:["Primera reunión agendada","Primera reunión realizada","Transcripción generada en Granola","Overview completado en Plataforma Tantauco (requisito)","Presentada en reunión semanal del equipo","Aprobada por el equipo → Internal Committee","Rechazada por el equipo → Declined","Más info requerida → analista investiga y vuelve","Sin suficiente interés → Hold"],tasks:["Confirmar la reunión y enviar el invite por Gmail","Realizar la reunión y tomar notas activamente","Verificar que Granola grabó y transcribió correctamente la reunión","Completar el Overview obligatorio en Plataforma Tantauco","Agregar toda la información adicional disponible: métricas, equipo, cap table","Preparar una presentación breve para la reunión semanal del equipo","Presentar la startup al equipo y documentar la decisión en Plataforma Tantauco"],ai:["🔴 PENDIENTE · Auto-rellenado del Overview en Plataforma Tantauco desde la transcripción de Granola con N8N o Claude Cowork","🔴 PENDIENTE · Extracción automática de métricas clave desde la transcripción + web scraping de la startup"]},
+{id:"ic",name:"Internal Committee",sub:"Análisis mayor + data room",kind:"Estado",desc:"Una startup llega a Internal Committee cuando el equipo la aprobó en la reunión semanal de Screening. El analista le escribe al founder para expresar interés y solicitar más información — idealmente un Data Room. Se profundiza el análisis y se prepara una presentación en Plataforma Tantauco para la siguiente reunión semanal.",tools:["Gmail","Granola","Plataforma Tantauco","Google Docs"],storage:"Plataforma Tantauco › Internal Committee",resp:["Analyst"],info:["Data Room o info adicional del founder","Análisis de los puntos que llamaron la atención en Screening","Análisis de mercado (TAM/SAM/SOM)","Análisis del equipo fundador","Modelo de negocio y financials básicos"],notes:"El análisis se enfoca en los puntos específicos que generaron interés en Screening. No es un due diligence completo.",events:["Startup aprobada en reunión semanal → entra a IC","Email enviado al founder solicitando Data Room","Data Room o información adicional recibida","Análisis mayor completado","Presentada en reunión semanal (análisis mayor)","Partners solicitan segunda reunión → Evaluación","Equipo decide declinar → Declined","Buen deal pero mal timing → Hold"],tasks:["Escribir email al founder expresando interés y solicitando Data Room","Analizar los puntos específicos que llamaron la atención en Screening","Revisar Data Room o info adicional recibida","Completar análisis de mercado básico (TAM/SAM/SOM)","Investigar equipo fundador: LinkedIn, Harmonic, referencias disponibles","Preparar el análisis mayor y la presentación directamente en Plataforma Tantauco","Presentar al equipo en reunión semanal y documentar la decisión"],ai:["🔴 PENDIENTE · Análisis automático de documentos del Data Room con IA","🔴 PENDIENTE · Generación automática del análisis de mercado (TAM/SAM/SOM) con datos en tiempo real","🔴 PENDIENTE · Template de email de solicitud de Data Room personalizado por sector"]},
+{id:"eval",name:"Evaluación",sub:"Segunda reunión — dupla asignada",kind:"Estado",desc:"Los Partners solicitan la segunda reunión. El deal se asigna a una dupla Analyst + Partner. Idas y vueltas de Q&A con el founder. Parte clave: buscar referencias del equipo fundador, referencias del producto con clientes reales y probar el producto directamente cuando sea posible.",tools:["Google Meet","Gmail","Granola","Plataforma Tantauco","Data Room"],storage:"Plataforma Tantauco › Evaluación",resp:["Analyst","Partner"],info:["Data Room completo","P&L + proyecciones financieras","KPIs históricos y actuales","Cap table","Contratos clave","Respuestas Q&A con el founder","Referencias del equipo fundador","Referencias del producto y de clientes"],notes:"Esta etapa puede durar semanas. La señal de avance es la indicación explícita del Partner de armar el Memo. La Plataforma Tantauco permite registrar reuniones indicando si es primera o segunda reunión y pegar la transcripción y notas.",events:["Partners solicitan segunda reunión → startup entra a Evaluación","Dupla Analyst + Partner asignada al deal","Segunda reunión realizada","Q&A enviado al founder","Respuesta Q&A recibida","Referencias del equipo y producto consultadas","Análisis de Data Room completado","Indicación del Partner de armar Investment Memo → Memo","Decisión de declinar → Declined","Decisión de esperar → Hold"],tasks:["Agendar la segunda reunión con los founders (Partner + Analyst)","Realizar la segunda reunión y verificar que Granola transcribió correctamente","Enviar Q&A al founder post-reunión con las dudas pendientes","Analizar las respuestas del founder y revisar el Data Room completo","Buscar y consultar referencias del equipo fundador","Buscar referencias del producto con clientes o usuarios del segmento objetivo","Probar el producto directamente cuando sea posible","Documentar avances, conclusiones y dudas pendientes en Plataforma Tantauco","Recibir indicación del Partner para proceder con el Investment Memo"],ai:["🔴 PENDIENTE · Benchmark automático de métricas vs. comparables en LATAM","🔴 PENDIENTE · Auto-rellenado de Plataforma Tantauco desde Granola: la plataforma permite crear reuniones con nombre y participantes y pegar la transcripción para que un agente la estructure automáticamente"]},
+{id:"memo",name:"Investment Memo",sub:"Analista redacta el memo",kind:"Acción",desc:"El analista recibe la indicación del Partner de proceder con el memo. Se redacta en Notion, en la carpeta de Investment Memos, donde están todos los memos anteriores y el template base. El memo debe ser conciso, respetar el formato y generar una narrativa clara.",tools:["Notion (carpeta Investment Memos)","Granola (transcripciones)","Plataforma Tantauco","Gmail"],storage:"Notion › Carpeta Investment Memos",resp:["Analyst","Partner"],info:["Toda la info acumulada en Evaluación","Transcripciones de Granola de todas las reuniones","Data Room completo","Q&A respondido por el founder","Memos anteriores como referencia de formato y estilo"],notes:"Estructura del memo: 1) Executive Summary 2) Equipo 3) Solución 4) Oportunidad de mercado 5) Análisis financiero 6) Oportunidad de inversión.",events:["Indicación del Partner de proceder con el memo","Borrador completado por el analista","Memo enviado al Partner para revisión","Observaciones del Partner incorporadas","Memo aprobado por el Partner → External Committee"],tasks:["Recibir indicación explícita del Partner de proceder con el memo","Revisar memos anteriores en Notion como referencia de formato y calidad","Reunir todos los insumos: transcripciones de Granola, Data Room, Q&A","Redactar el memo completo en Notion siguiendo el template estándar","Asegurar que el memo tenga una narrativa clara y un hilo conductor","Enviar el borrador al Partner para revisión","Incorporar los comentarios y correcciones del Partner"],ai:["🔴 PENDIENTE · Generación automática del borrador del memo desde transcripciones de Granola + datos de Plataforma Tantauco con Claude Cowork o N8N","🔴 PENDIENTE · Sección de mercado auto-generada con datos en tiempo real usando búsqueda web"]},
+{id:"ec",name:"External Committee",sub:"Comité externo — decisión final",kind:"Estado",desc:"Comité externo donde los Partners presentan la startup junto a expertos del sector. Se decide definitivamente si se aprueba o rechaza el cheque. El analista no participa en esta reunión.",tools:["Google Meet","Notion (memo)","Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco",resp:["Partner"],info:["Investment Memo aprobado","Expertos del sector confirmados","Presentación ejecutiva del deal","Risk assessment final"],notes:"Participantes: Partners del fondo · Venture Partner (requerido) · Advisor del sector.",events:["Expertos del comité identificados y confirmados","Comité agendado","Investment Memo enviado a los miembros","External Committee realizado","Feedback de expertos documentado","Aprobado → Due Diligence Legal","Rechazado → Declined"],tasks:["El Partner coordina el comité y gestiona la logística","El Partner envía el Investment Memo a todos los miembros con anticipación","El Partner prepara la presentación ejecutiva del deal","Los Partners documentan el feedback y la decisión en Plataforma Tantauco"],ai:[]},
+{id:"dd",name:"Due Diligence Legal",sub:"Partner + Abogados",kind:"Acción",desc:"Due diligence legal completa liderada por el Partner con apoyo de abogados externos. Se verifica que la estructura legal no tenga impedimentos para la inversión. Este proceso ocurre entre los abogados, los founders y los Partners.",tools:["Abogados externos","Data Room","Gmail","Google Drive"],storage:"Plataforma Tantauco + Google Drive",resp:["Partner","Abogados"],info:["Documentos corporativos y acta de constitución","Cap table legal completa","Contratos laborales clave","Propiedad intelectual (IP)","Contratos con clientes y proveedores clave","Litigios y contingencias pendientes","Cumplimiento regulatorio"],notes:"¿Red flags bloqueantes? → Declined · ¿Condiciones negociables? → resolver y cerrar · ¿Sin issues? → Inversión.",events:["Abogados externos contratados","DD legal iniciada","Informe de DD recibido","Red flag legal identificado","Condiciones negociadas y resueltas","DD completada sin issues → proceder al cierre"],tasks:["Contratar o coordinar los abogados externos","Compartir el Data Room con los abogados","Hacer seguimiento al avance de la DD","Revisar el informe de DD entregado por los abogados","Negociar condiciones si es necesario","Documentar conclusiones y decisión final en Plataforma Tantauco"],ai:[]},
+{id:"invested",name:"Invested",sub:"Cierre + portfolio",kind:"Completado",desc:"Una vez completada la Due Diligence Legal, se procede al cierre formal. Firma de documentos, transferencia de fondos y registro oficial. La startup queda registrada como invertida en Plataforma Tantauco e inicia el Portfolio Monitoring.",tools:["Abogados","DocuSign / Firma física","Gmail","Plataforma Tantauco"],storage:"Plataforma Tantauco",resp:["Partner","Abogados","Analyst"],info:["Term sheet firmado","Documentos de cierre firmados (SHA, SPA u otros)","Confirmación de transferencia de fondos","Monto invertido, valoración y % equity","Vehículo e instrumento de inversión","Cap table post-inversión","Fecha de cierre"],notes:"El cierre es liderado por el Partner y los abogados. El analista apoya en el registro en Plataforma Tantauco y prepara el mini-memo resumen para los LPs.",events:["Term sheet negociado y firmado","Documentos de cierre preparados por abogados","Documentos firmados por ambas partes","Transferencia de fondos realizada","Cierre legal confirmado","Startup marcada como Invested en Plataforma Tantauco","LPs notificados","Startup ingresa al Portfolio Monitoring"],tasks:["Firma de documentos de cierre","Transferencia de fondos","Confirmar cierre legal con abogados","Actualizar el estado a Invested en Plataforma Tantauco con todos los datos del cierre","Armar un mini-memo resumen de la inversión para enviar a los LPs","Iniciar el proceso de Portfolio Monitoring (onboarding)"],ai:["🔴 PENDIENTE · Generación automática del mini-memo resumen para LPs a partir de los datos del Investment Memo y la Plataforma Tantauco"]},
 ];
 const sS=[
-{id:"declined",name:"Declined",sub:"Descartada del pipeline",kind:"declined",desc:"La startup fue descartada del pipeline. Se documenta el motivo para aprendizaje interno. Puede reactivarse si cambian las condiciones.",tools:["Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco › Declined",resp:["Analyst"],info:["Motivo del rechazo","Etapa en que fue descartada","Feedback enviado al founder (si aplica)"],notes:"Una startup Declined puede reactivarse si cambian las condiciones.",events:["Decisión de decline tomada por el equipo","Motivo documentado en Plataforma Tantauco","Email de feedback enviado al founder (opcional)"],tasks:["Documentar motivo del decline en Plataforma Tantauco","Enviar email de feedback al founder si corresponde","Marcar como Declined en el pipeline"],ai:["🟡 PARCIAL · Template de email de decline personalizado según motivo"]},
-{id:"hold",name:"Hold",sub:"Follow-up cada 3-4 meses",kind:"hold",desc:"Startups que generan interés pero no en este momento. Los analistas deben contactarlas cada 3-4 meses para recibir actualizaciones y evaluar si el timing cambió.",tools:["Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco › Hold",resp:["Analyst"],info:["Motivo del Hold","Fecha de último contacto","Próxima fecha de seguimiento","Updates recibidos"],notes:"Responsabilidad del analista: mantener contacto activo con startups en Hold. No dejar que se enfríen.",events:["Startup puesta en Hold","Follow-up enviado al founder (cada 3-4 meses)","Update recibida del founder","Startup reactivada al pipeline activo","Startup promovida a Declined"],tasks:["Documentar motivo del Hold en Plataforma Tantauco","Agendar recordatorio de follow-up en 3-4 meses","Enviar email de check-in al founder cada 3-4 meses","Registrar updates recibidos en Plataforma Tantauco","Evaluar en cada check-in si se reactiva o se declina"],ai:["🔴 PENDIENTE · Recordatorio automático cada 3-4 meses para follow-up a startups en Hold","🔴 PENDIENTE · Monitoreo automático de noticias de startups en Hold (rondas, nuevas métricas)"]},
+{id:"declined",name:"Declined",sub:"Descartada del pipeline",kind:"Declined",desc:"La startup fue descartada del pipeline. Se documenta el motivo para aprendizaje interno. Puede reactivarse si cambian las condiciones.",tools:["Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco › Declined",resp:["Analyst"],info:["Motivo del rechazo","Etapa en que fue descartada","Feedback enviado al founder (si aplica)"],notes:"Una startup Declined puede reactivarse si cambian las condiciones.",events:["Decisión de decline tomada por el equipo","Motivo documentado en Plataforma Tantauco","Email de feedback enviado al founder (opcional)"],tasks:["Documentar motivo del decline en Plataforma Tantauco","Enviar email de feedback al founder si corresponde","Marcar como Declined en el pipeline"],ai:["🟡 PARCIAL · Template de email de decline personalizado según motivo"]},
+{id:"hold",name:"Hold",sub:"Follow-up cada 3-4 meses",kind:"Hold",desc:"Startups que generan interés pero no en este momento. Los analistas deben contactarlas cada 3-4 meses para recibir actualizaciones y evaluar si el timing cambió.",tools:["Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco › Hold",resp:["Analyst"],info:["Motivo del Hold","Fecha de último contacto","Próxima fecha de seguimiento","Updates recibidos"],notes:"Responsabilidad del analista: mantener contacto activo con startups en Hold. No dejar que se enfríen.",events:["Startup puesta en Hold","Follow-up enviado al founder (cada 3-4 meses)","Update recibida del founder","Startup reactivada al pipeline activo","Startup promovida a Declined"],tasks:["Documentar motivo del Hold en Plataforma Tantauco","Agendar recordatorio de follow-up en 3-4 meses","Enviar email de check-in al founder cada 3-4 meses","Registrar updates recibidos en Plataforma Tantauco","Evaluar en cada check-in si se reactiva o se declina"],ai:["🔴 PENDIENTE · Recordatorio automático cada 3-4 meses para follow-up a startups en Hold","🔴 PENDIENTE · Monitoreo automático de noticias de startups en Hold (rondas, nuevas métricas)"]},
 ];
 const mS=[
-{id:"m_onboarding",name:"Onboarding",sub:"Bienvenida al portfolio",kind:"source",desc:"Inmediatamente después del cierre, la startup ingresa al Portfolio Monitoring. Se da la bienvenida formal, se presenta el equipo y los beneficios, y se establece la cadencia de trabajo. Se hace una primera categorización para dosificar el esfuerzo del equipo.",tools:["Plataforma Tantauco","Gmail","Google Meet","Granola"],storage:"Plataforma Tantauco",resp:["Analyst","Partner"],info:["Equipo fundador y contactos clave","Métricas baseline al momento del cierre","Necesidades prioritarias del founder","Categorización inicial: tier y áreas de valor"],notes:"Un buen onboarding establece la base de confianza con los founders.",events:["Equipo responsable asignado (Partner G + Analyst L)","Categorización inicial completada","Onboarding email enviado","Founder form enviado y recibido","Quarterly form enviado","Kick-off realizado y transcrito en Granola","Reuniones recurrentes agendadas"],tasks:["Confirmar la asignación del equipo (Partner G + Analyst L) en Plataforma Tantauco","Hacer la categorización inicial: tier, cercanía, áreas de valor, necesidades prioritarias","Enviar el onboarding email con Founder form y Quarterly form","Agendar y realizar el kick-off con los founders","Verificar que Granola grabó el kick-off y estructurar insights en Plataforma Tantauco","Registrar la información del onboarding en Plataforma Tantauco","Agendar las reuniones recurrentes con la cadencia acordada"],sub2:[{t:"Categorización inicial",items:[{l:"Tier",d:"Clasificación según potencial de retorno y etapa actual. Permite priorizar dónde dedicar más tiempo."},{l:"Cercanía y frecuencia",d:"¿Cuánto contacto necesita esta startup? Define la intensidad del seguimiento."},{l:"Áreas de valor",d:"¿En qué puede ayudar más Tantauco: fundraising, intros B2B, hiring, estrategia, expansión regional?"},{l:"Necesidades prioritarias",d:"¿Qué es lo más urgente ahora? Se recoge en el Founder form y se discute en el kick-off."}]},{t:"Propuesta de valor del portfolio",items:[{l:"Red de fondos",d:"BBDD de fondos con los que Tantauco tiene relación para intros en futuras rondas."},{l:"Perks y créditos",d:"Créditos de Anthropic, tokens y otros beneficios tecnológicos disponibles."},{l:"Red de empresas en Chile",d:"Principales empresas y contactos para intros B2B relevantes."},{l:"Red de advisors",d:"Venture Partners y expertos que pueden aportar conocimiento o abrir puertas."}]}],ai:["🔴 PENDIENTE · Envío automático trimestral del Quarterly form a cada startup del portfolio"]},
-{id:"m_recurrente",name:"Reuniones Recurrentes",sub:"Seguimiento activo continuo",kind:"status",desc:"Proceso continuo durante toda la vida de la inversión. Reuniones periódicas de touch point, recolección de métricas, registro estructurado y entrega de valor activo. A cada reunión asiste un Partner y un Analista. Es responsabilidad del analista que las reuniones sean grabadas con Granola y que los insights queden registrados en Plataforma Tantauco.",tools:["Google Meet","Granola","Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco + Granola",resp:["Analyst","Partner"],info:["KPIs del período","Updates del equipo y producto","Blockers y necesidades","Notas de la reunión anterior","Cambios relevantes en equipo, mercado o estrategia"],notes:"Frecuencia: reunión mensual de touch point + Quarterly form trimestral.",events:["Reunión mensual agendada","Reunión realizada y grabada con Granola","Insights estructurados y registrados en Plataforma Tantauco","Métricas actualizadas","Quarterly form enviado y procesado","Categorización actualizada si corresponde"],tasks:["Preparar la reunión: revisar notas anteriores, métricas e info relevante","Realizar la reunión junto al Partner y verificar que Granola está grabando","Extraer y estructurar los insights de la transcripción de Granola post-reunión","Actualizar Plataforma Tantauco con métricas, notas clave y próximos pasos","Gestionar el envío trimestral del Quarterly form y consolidar la información","Identificar oportunidades de valor concretas y coordinar con el Partner"],sub2:[{t:"Contenido estándar de las reuniones mensuales",items:[{l:"Estado general",d:"¿Cómo va el negocio? ¿Hay cambios importantes desde la última reunión?"},{l:"Métricas clave",d:"ARR / MRR, crecimiento, churn, runway, equipo."},{l:"Blockers y necesidades",d:"¿Qué está frenando a la startup? ¿En qué puede ayudar Tantauco?"},{l:"Fundraising",d:"¿Están levantando ronda? ¿Cuándo? ¿Qué necesitan del fondo?"},{l:"Cambios relevantes",d:"Cambios en equipo, producto, mercado o estrategia."}]}],ai:["🔴 PENDIENTE · Bot de noticias pre-reunión: busca novedades relevantes de cada startup y entrega insights y preguntas útiles para el founder","🔴 PENDIENTE · Agente de Granola → Plataforma Tantauco: lee la transcripción post-reunión y estructura automáticamente notas, métricas y datos importantes","🔴 PENDIENTE · Envío automático trimestral del Quarterly form","🔴 PENDIENTE · Agentes de señales por startup: monitorean cumpleaños de founders, actualizaciones en LinkedIn, menciones en prensa y cambios de cargo"]},
-{id:"m_soporte",name:"Soporte Activo",sub:"Entrega de valor al portfolio",kind:"complete",desc:"Más allá del capital, Tantauco busca ser un aliado real para sus startups. El soporte activo cubre cinco tracks de valor concreto: estrategia, intros a inversores, intros B2B, perks y comunidad. El equipo busca proactivamente nuevas formas de entregar valor.",tools:["Gmail","LinkedIn","WhatsApp","Plataforma Tantauco","Notion perks"],storage:"Plataforma Tantauco",resp:["Partner","Principal","Analyst"],info:["Necesidades actuales de la startup","BBDD de fondos de inversión","Red de empresas y contactos B2B en Chile","Perks y beneficios disponibles","Vacantes de hiring de las startups"],notes:"El soporte no es reactivo — el equipo busca proactivamente formas de agregar valor según la etapa y tier de cada startup.",events:["Intro a fondo realizada y resultado registrado","Intro B2B realizada y resultado registrado","Perk activado","Sesión de apoyo estratégico realizada","Vacante publicada en portal y RRSS","Nueva forma de valor identificada e implementada"],tasks:["Identificar en cada reunión mensual las necesidades concretas y oportunidades de apoyo","Coordinar con el Partner las intros a fondos o clientes B2B que correspondan","Gestionar el acceso de las startups a los perks y beneficios disponibles","Publicar y difundir vacantes de hiring del portfolio","Registrar en Plataforma Tantauco todas las intros realizadas y su resultado","Mantener el grupo de WhatsApp del portfolio activo con mensajes continuos de valor","Explorar y proponer nuevas formas de entregar valor al portfolio de forma proactiva"],sub2:[{t:"Tracks de soporte",items:[{l:"Track 1 · Estrategia",d:"Apoyo del Partner en fundraising, revisión de deck y Data Room, expansión regional y decisiones estratégicas."},{l:"Track 2 · Intros a inversores",d:"BBDD de fondos para intros cuando la startup está levantando ronda. Se registra cada intro y resultado."},{l:"Track 3 · Intros B2B",d:"Conexiones con potenciales clientes o socios de la red de Tantauco en Chile y LATAM."},{l:"Track 4 · Perks",d:"Créditos de Anthropic, tokens, descuentos con proveedores. Pendiente: portal centralizado para founders."},{l:"Track 5 · Comunidad",d:"Grupo de WhatsApp activo con todas las startups. El equipo envía mensajes regulares de valor."}]}],ai:["🔴 PENDIENTE · Portal de recursos del portfolio: plataforma donde las startups puedan ver fondos, empresas clave en Chile, perks y recursos disponibles","🔴 PENDIENTE · Matching automático de intros a fondos y B2B según el perfil de la startup","🔴 PENDIENTE · Exploración continua de nuevas formas de valor: proceso sistemático para identificar nuevos perks, alianzas y recursos"]},
+{id:"m_onboarding",name:"Onboarding",sub:"Bienvenida al portfolio",kind:"Fuente",desc:"Inmediatamente después del cierre, la startup ingresa al Portfolio Monitoring. Se da la bienvenida formal, se presenta el equipo y los beneficios, y se establece la cadencia de trabajo. Se hace una primera categorización para dosificar el esfuerzo del equipo.",tools:["Plataforma Tantauco","Gmail","Google Meet","Granola"],storage:"Plataforma Tantauco",resp:["Analyst","Partner"],info:["Equipo fundador y contactos clave","Métricas baseline al momento del cierre","Necesidades prioritarias del founder","Categorización inicial: tier y áreas de valor"],notes:"Un buen onboarding establece la base de confianza con los founders.",events:["Equipo responsable asignado (Partner G + Analyst L)","Categorización inicial completada","Onboarding email enviado","Founder form enviado y recibido","Quarterly form enviado","Kick-off realizado y transcrito en Granola","Reuniones recurrentes agendadas"],tasks:["Confirmar la asignación del equipo (Partner G + Analyst L) en Plataforma Tantauco","Hacer la categorización inicial: tier, cercanía, áreas de valor, necesidades prioritarias","Enviar el onboarding email con Founder form y Quarterly form","Agendar y realizar el kick-off con los founders","Verificar que Granola grabó el kick-off y estructurar insights en Plataforma Tantauco","Registrar la información del onboarding en Plataforma Tantauco","Agendar las reuniones recurrentes con la cadencia acordada"],sub2:[{t:"Categorización inicial",items:[{l:"Tier",d:"Clasificación según potencial de retorno y etapa actual. Permite priorizar dónde dedicar más tiempo."},{l:"Cercanía y frecuencia",d:"¿Cuánto contacto necesita esta startup? Define la intensidad del seguimiento."},{l:"Áreas de valor",d:"¿En qué puede ayudar más Tantauco: fundraising, intros B2B, hiring, estrategia, expansión regional?"},{l:"Necesidades prioritarias",d:"¿Qué es lo más urgente ahora? Se recoge en el Founder form y se discute en el kick-off."}]},{t:"Propuesta de valor del portfolio",items:[{l:"Red de fondos",d:"BBDD de fondos con los que Tantauco tiene relación para intros en futuras rondas."},{l:"Perks y créditos",d:"Créditos de Anthropic, tokens y otros beneficios tecnológicos disponibles."},{l:"Red de empresas en Chile",d:"Principales empresas y contactos para intros B2B relevantes."},{l:"Red de advisors",d:"Venture Partners y expertos que pueden aportar conocimiento o abrir puertas."}]}],ai:["🔴 PENDIENTE · Envío automático trimestral del Quarterly form a cada startup del portfolio"]},
+{id:"m_recurrente",name:"Reuniones Recurrentes",sub:"Seguimiento activo continuo",kind:"Estado",desc:"Proceso continuo durante toda la vida de la inversión. Reuniones periódicas de touch point, recolección de métricas, registro estructurado y entrega de valor activo. A cada reunión asiste un Partner y un Analista. Es responsabilidad del analista que las reuniones sean grabadas con Granola y que los insights queden registrados en Plataforma Tantauco.",tools:["Google Meet","Granola","Plataforma Tantauco","Gmail"],storage:"Plataforma Tantauco + Granola",resp:["Analyst","Partner"],info:["KPIs del período","Updates del equipo y producto","Blockers y necesidades","Notas de la reunión anterior","Cambios relevantes en equipo, mercado o estrategia"],notes:"Frecuencia: reunión mensual de touch point + Quarterly form trimestral.",events:["Reunión mensual agendada","Reunión realizada y grabada con Granola","Insights estructurados y registrados en Plataforma Tantauco","Métricas actualizadas","Quarterly form enviado y procesado","Categorización actualizada si corresponde"],tasks:["Preparar la reunión: revisar notas anteriores, métricas e info relevante","Realizar la reunión junto al Partner y verificar que Granola está grabando","Extraer y estructurar los insights de la transcripción de Granola post-reunión","Actualizar Plataforma Tantauco con métricas, notas clave y próximos pasos","Gestionar el envío trimestral del Quarterly form y consolidar la información","Identificar oportunidades de valor concretas y coordinar con el Partner"],sub2:[{t:"Contenido estándar de las reuniones mensuales",items:[{l:"Estado general",d:"¿Cómo va el negocio? ¿Hay cambios importantes desde la última reunión?"},{l:"Métricas clave",d:"ARR / MRR, crecimiento, churn, runway, equipo."},{l:"Blockers y necesidades",d:"¿Qué está frenando a la startup? ¿En qué puede ayudar Tantauco?"},{l:"Fundraising",d:"¿Están levantando ronda? ¿Cuándo? ¿Qué necesitan del fondo?"},{l:"Cambios relevantes",d:"Cambios en equipo, producto, mercado o estrategia."}]}],ai:["🔴 PENDIENTE · Bot de noticias pre-reunión: busca novedades relevantes de cada startup y entrega insights y preguntas útiles para el founder","🔴 PENDIENTE · Agente de Granola → Plataforma Tantauco: lee la transcripción post-reunión y estructura automáticamente notas, métricas y datos importantes","🔴 PENDIENTE · Envío automático trimestral del Quarterly form","🔴 PENDIENTE · Agentes de señales por startup: monitorean cumpleaños de founders, actualizaciones en LinkedIn, menciones en prensa y cambios de cargo"]},
+{id:"m_soporte",name:"Soporte Activo",sub:"Entrega de valor al portfolio",kind:"Completado",desc:"Más allá del capital, Tantauco busca ser un aliado real para sus startups. El soporte activo cubre cinco tracks de valor concreto: estrategia, intros a inversores, intros B2B, perks y comunidad. El equipo busca proactivamente nuevas formas de entregar valor.",tools:["Gmail","LinkedIn","WhatsApp","Plataforma Tantauco","Notion perks"],storage:"Plataforma Tantauco",resp:["Partner","Principal","Analyst"],info:["Necesidades actuales de la startup","BBDD de fondos de inversión","Red de empresas y contactos B2B en Chile","Perks y beneficios disponibles","Vacantes de hiring de las startups"],notes:"El soporte no es reactivo — el equipo busca proactivamente formas de agregar valor según la etapa y tier de cada startup.",events:["Intro a fondo realizada y resultado registrado","Intro B2B realizada y resultado registrado","Perk activado","Sesión de apoyo estratégico realizada","Vacante publicada en portal y RRSS","Nueva forma de valor identificada e implementada"],tasks:["Identificar en cada reunión mensual las necesidades concretas y oportunidades de apoyo","Coordinar con el Partner las intros a fondos o clientes B2B que correspondan","Gestionar el acceso de las startups a los perks y beneficios disponibles","Publicar y difundir vacantes de hiring del portfolio","Registrar en Plataforma Tantauco todas las intros realizadas y su resultado","Mantener el grupo de WhatsApp del portfolio activo con mensajes continuos de valor","Explorar y proponer nuevas formas de entregar valor al portfolio de forma proactiva"],sub2:[{t:"Tracks de soporte",items:[{l:"Track 1 · Estrategia",d:"Apoyo del Partner en fundraising, revisión de deck y Data Room, expansión regional y decisiones estratégicas."},{l:"Track 2 · Intros a inversores",d:"BBDD de fondos para intros cuando la startup está levantando ronda. Se registra cada intro y resultado."},{l:"Track 3 · Intros B2B",d:"Conexiones con potenciales clientes o socios de la red de Tantauco en Chile y LATAM."},{l:"Track 4 · Perks",d:"Créditos de Anthropic, tokens, descuentos con proveedores. Pendiente: portal centralizado para founders."},{l:"Track 5 · Comunidad",d:"Grupo de WhatsApp activo con todas las startups. El equipo envía mensajes regulares de valor."}]}],ai:["🔴 PENDIENTE · Portal de recursos del portfolio: plataforma donde las startups puedan ver fondos, empresas clave en Chile, perks y recursos disponibles","🔴 PENDIENTE · Matching automático de intros a fondos y B2B según el perfil de la startup","🔴 PENDIENTE · Exploración continua de nuevas formas de valor: proceso sistemático para identificar nuevos perks, alianzas y recursos"]},
 ];
 
 function useAITasks(all){
@@ -211,12 +365,14 @@ function useAITasks(all){
   return{toggle,add,getSorted};
 }
 
-function Chk(){return h("svg",{width:9,height:7,viewBox:"0 0 9 7"},h("polyline",{points:"1,3.5 3.5,6 8,1",fill:"none",stroke:"#EAF3DE",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
-function Bk(){return h("svg",{width:16,height:16,viewBox:"0 0 16 16"},h("polyline",{points:"10,3 5,8 10,13",fill:"none",stroke:"currentColor",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
-function Rv({open}){return h("svg",{width:12,height:12,viewBox:"0 0 12 12",style:{transform:open?"rotate(90deg)":"none",transition:"transform 0.15s",flexShrink:0}},h("polyline",{points:"3,2 9,6 3,10",fill:"none",stroke:"#97C459",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
-function FwArr(){return h("svg",{width:16,height:16,viewBox:"0 0 16 16"},h("polyline",{points:"4,3 12,8 4,13",fill:"none",stroke:"#EAF3DE",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
-function ArrRight(){return h("svg",{width:18,height:12,viewBox:"0 0 18 12"},h("line",{x1:1,y1:6,x2:13,y2:6,stroke:"#97C459",strokeWidth:1.5}),h("polyline",{points:"8,2 13,6 8,10",fill:"none",stroke:"#97C459",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
+/* SVG helpers */
+function ChkSvg(){return h("svg",{width:10,height:8,viewBox:"0 0 10 8"},h("polyline",{points:"1,4 3.5,7 9,1",fill:"none",stroke:"#F2EDE3",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}));}
+function BackSvg(){return h("svg",{width:16,height:16,viewBox:"0 0 16 16"},h("polyline",{points:"10,3 5,8 10,13",fill:"none",stroke:"currentColor",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
+function RvSvg({open}){return h("svg",{width:12,height:12,viewBox:"0 0 12 12",style:{transform:open?"rotate(90deg)":"none",transition:"transform 0.15s",flexShrink:0}},h("polyline",{points:"3,2 9,6 3,10",fill:"none",stroke:"#7A9585",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
+function FwSvg(){return h("svg",{width:16,height:16,viewBox:"0 0 16 16"},h("polyline",{points:"4,3 12,8 4,13",fill:"none",stroke:"#F2EDE3",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}));}
+function ArrSvg(){return h("svg",{width:20,height:14,viewBox:"0 0 20 14"},h("line",{x1:1,y1:7,x2:15,y2:7,stroke:"#C4BAA8",strokeWidth:1.5}),h("polyline",{points:"10,3 15,7 10,11",fill:"none",stroke:"#C4BAA8",strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}));}
 
+/* AITab */
 function AITab({s,toggle,add,getSorted}){
   const [nT,setNT]=useState("");
   const sorted=getSorted(s.id);
@@ -224,13 +380,11 @@ function AITab({s,toggle,add,getSorted}){
   const tot=sorted.length;
   const pct=tot>0?Math.round(done/tot*100):0;
   const sub=()=>{if(nT.trim()){add(s.id,nT);setNT("");}};
-  return h("div",{style:{display:"flex",flexDirection:"column",gap:8}},
-    tot>0&&h("div",{style:{padding:"8px 10px",background:"#EAF3DE",border:"1px solid #C0DD97",borderRadius:7,display:"flex",gap:8,alignItems:"center"}},
-      h("span",{style:{flex:1,fontSize:11,color:"#27500A",fontWeight:500}},tot+" tareas · "+done+"/"+tot+" completadas"),
-      h("div",{style:{display:"flex",alignItems:"center",gap:5}},
-        h("div",{style:{height:4,width:60,background:"#C0DD97",borderRadius:2,overflow:"hidden"}},h("div",{style:{width:pct+"%",height:"100%",background:"#3B6D11",borderRadius:2,transition:"width 0.3s"}})),
-        h("span",{style:{fontSize:10,color:"#27500A",fontWeight:500}},pct+"%")
-      )
+  return h("div",{style:{display:"flex",flexDirection:"column",gap:10}},
+    tot>0&&h("div",{className:"ai-prog"},
+      h("span",{style:{flex:1,fontSize:12,color:"rgba(242,237,227,0.85)",fontWeight:500}},tot+" tareas · "+done+"/"+tot+" completadas"),
+      h("div",{className:"ai-prog-bar"},h("div",{className:"ai-prog-fill",style:{width:pct+"%"}})),
+      h("span",{style:{fontSize:11,color:"#C9A84C",fontWeight:500,minWidth:32}},pct+"%")
     ),
     h("div",{className:"arow"},
       h("input",{className:"ainp",placeholder:"Agregar nueva tarea de automatización...",value:nT,onChange:e=>setNT(e.target.value),onKeyDown:e=>{if(e.key==="Enter")sub();}}),
@@ -238,57 +392,64 @@ function AITab({s,toggle,add,getSorted}){
     ),
     sorted.filter(t=>!t.done).length>0&&h("div",{className:"slbl"},"Pendientes ("+sorted.filter(t=>!t.done).length+")"),
     ...sorted.filter(t=>!t.done).map(t=>h("div",{key:t.i,className:"crow",onClick:()=>toggle(s.id,t.i)},
-      h("div",{className:"cbox"}),h("span",{style:{fontSize:11,color:"#173404",lineHeight:1.5}},t.text)
+      h("div",{className:"cbox"}),h("span",{style:{fontSize:12,color:"#1C3A2A",lineHeight:1.6}},t.text)
     )),
     done>0&&h("div",{className:"slbl",style:{marginTop:4}},"Completadas ("+done+")"),
     ...sorted.filter(t=>t.done).map(t=>h("div",{key:t.i,className:"crow done",onClick:()=>toggle(s.id,t.i)},
-      h("div",{className:"cbox on"},h(Chk)),h("span",{style:{fontSize:11,color:"#639922",lineHeight:1.5,textDecoration:"line-through"}},t.text)
+      h("div",{className:"cbox on"},h(ChkSvg)),h("span",{style:{fontSize:12,color:"#7A9585",lineHeight:1.6,textDecoration:"line-through"}},t.text)
     )),
-    tot===0&&h("div",{style:{fontSize:11,color:"#97C459",padding:"10px",textAlign:"center"}},"No hay automatizaciones registradas.")
+    tot===0&&h("div",{style:{fontSize:12,color:"#7A9585",padding:"12px",textAlign:"center",fontStyle:"italic"}},"No hay automatizaciones registradas.")
   );
 }
 
+/* Detail Panel */
 function DP({s,onClose,toggle,add,getSorted}){
   const [tab,setTab]=useState("overview");
   const tabs=[["overview","Resumen"],["tasks","Tareas"],["ai","Automatización IA"],["tools","Herramientas"]];
   return h("div",{className:"dp"},
     h("div",{className:"dp-h"},
       h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}},
-        h("div",null,h("div",{className:"dp-n"},s.name),h("div",{className:"dp-su"},s.sub)),
+        h("div",null,
+          h("div",{style:{fontSize:10,letterSpacing:"0.14em",textTransform:"uppercase",color:"#C9A84C",marginBottom:4,fontWeight:500}},s.kind),
+          h("div",{className:"dp-n"},s.name),
+          h("div",{className:"dp-su"},s.sub)
+        ),
         h("button",{onClick:onClose,className:"dp-x"},"×")
       ),
-      h("div",{style:{marginTop:7,display:"flex",gap:5,flexWrap:"wrap"}},
-        ...s.resp.map(r=>h("span",{key:r,className:"badge"},r))
-      )
+      h("div",{className:"dp-badges"},...s.resp.map(r=>h("span",{key:r,className:"dp-badge"},r)))
     ),
     h("div",{className:"dp-tabs"},...tabs.map(([id,lbl])=>h("button",{key:id,className:"dt"+(tab===id?" on":""),onClick:()=>setTab(id)},lbl))),
     h("div",{className:"dp-body"},
       tab==="overview"&&[
-        h("p",{key:"d",style:{margin:0,fontSize:12,color:"#173404",lineHeight:1.7}},s.desc),
+        h("p",{key:"d",style:{margin:0,fontSize:13,color:"#1C3A2A",lineHeight:1.75,fontWeight:300}},s.desc),
         s.notes&&h("div",{key:"n",className:"nbox"},s.notes),
-        h("div",{key:"ev"},h("div",{className:"slbl"},"Eventos registrables"),h("div",null,...s.events.map((e,i)=>h("div",{key:i,style:{display:"flex",gap:7,alignItems:"flex-start",padding:"4px 0",borderBottom:"1px solid #EAF3DE"}},h("div",{className:"dot"}),h("span",{style:{fontSize:11,color:"#173404"}},e))))),
-        h("div",{key:"inf"},h("div",{className:"slbl"},"Información requerida"),h("div",{style:{display:"flex",flexDirection:"column",gap:2}},...s.info.map((x,i)=>h("div",{key:i,style:{fontSize:11,color:"#3B6D11"}},"• "+x)))),
-        s.sub2&&s.sub2.map((ss,si)=>h("div",{key:"ss"+si},h("div",{className:"slbl"},ss.t),...ss.items.map((item,ii)=>h("div",{key:ii,className:"irow",style:{flexDirection:"column",gap:2}},h("div",{style:{fontSize:11,fontWeight:500,color:"#27500A"}},item.l),h("div",{style:{fontSize:10,color:"#3B6D11",lineHeight:1.5}},item.d)))))
+        h("div",{key:"ev"},h("div",{className:"slbl"},"Eventos registrables"),h("div",null,...s.events.map((e,i)=>h("div",{key:i,style:{display:"flex",gap:8,alignItems:"flex-start",padding:"5px 0",borderBottom:"1px solid #EAE4D8"}},h("div",{className:"dot"}),h("span",{style:{fontSize:12,color:"#1C3A2A",lineHeight:1.5}},e))))),
+        h("div",{key:"inf"},h("div",{className:"slbl"},"Información requerida"),h("div",{style:{display:"flex",flexDirection:"column",gap:3}},...s.info.map((x,i)=>h("div",{key:i,style:{fontSize:12,color:"#4A6355"}},"• "+x)))),
+        s.sub2&&s.sub2.map((ss,si)=>h("div",{key:"ss"+si},h("div",{className:"slbl"},ss.t),...ss.items.map((item,ii)=>h("div",{key:ii,className:"irow",style:{flexDirection:"column",gap:3}},h("div",{style:{fontSize:12,fontWeight:500,color:"#1C3A2A"}},item.l),h("div",{style:{fontSize:11,color:"#4A6355",lineHeight:1.5}},item.d)))))
       ],
       tab==="tasks"&&[
-        h("div",{key:"th",style:{fontSize:11,color:"#3B6D11"}},s.tasks.length+" tareas en esta etapa:"),
-        ...s.tasks.map((t,i)=>h("div",{key:i,className:"irow"},h("div",{style:{fontSize:11,fontWeight:500,color:"#3B6D11",minWidth:18}},i+1),h("span",{style:{fontSize:11,color:"#173404",lineHeight:1.5}},t)))
+        h("div",{key:"th",style:{fontSize:12,color:"#4A6355"}},s.tasks.length+" tareas en esta etapa:"),
+        ...s.tasks.map((t,i)=>h("div",{key:i,className:"irow",style:{gap:12}},
+          h("div",{style:{fontSize:12,fontWeight:600,color:"#C9A84C",minWidth:20,textAlign:"right",flexShrink:0}},i+1),
+          h("span",{style:{fontSize:12,color:"#1C3A2A",lineHeight:1.6}},t)
+        ))
       ],
       tab==="ai"&&h(AITab,{s,toggle,add,getSorted}),
       tab==="tools"&&[
-        h("div",{key:"tl"},h("div",{className:"slbl"},"Herramientas actuales"),h("div",{style:{display:"flex",flexWrap:"wrap",gap:5}},...s.tools.map((t,i)=>h("span",{key:i,className:"pill"},t)))),
+        h("div",{key:"tl"},h("div",{className:"slbl"},"Herramientas actuales"),h("div",{style:{display:"flex",flexWrap:"wrap",gap:6}},...s.tools.map((t,i)=>h("span",{key:i,className:"pill"},t)))),
         h("div",{key:"st"},h("div",{className:"slbl"},"Dónde se guarda la información"),h("div",{className:"nbox",style:{fontWeight:500}},s.storage)),
-        h("div",{key:"rs"},h("div",{className:"slbl"},"Responsables"),h("div",{style:{display:"flex",flexWrap:"wrap",gap:5}},...s.resp.map((r,i)=>h("span",{key:i,className:"badge"},r))))
+        h("div",{key:"rs"},h("div",{className:"slbl"},"Responsables"),h("div",{style:{display:"flex",flexWrap:"wrap",gap:6}},...s.resp.map((r,i)=>h("span",{key:i,className:"badge"},r))))
       ]
     )
   );
 }
 
+/* Pipeline Full View */
 function PFV({flow,onBack}){
   const [sel,setSel]=useState(null);
   const stages=flow==="investment"?iS:mS;
   const ttl=flow==="investment"?"Investment Pipeline":"Portfolio Monitoring";
-  const sub=flow==="investment"?"8 etapas · Scouting → Invested":"3 etapas · Onboarding → Soporte Activo";
+  const sub=flow==="investment"?"8 etapas · desde Scouting hasta Invested":"3 etapas · Onboarding → Soporte Activo";
   const invT=useAITasks([...iS,...sS]);
   const monT=useAITasks(mS);
   const spT=useAITasks(sS);
@@ -296,7 +457,7 @@ function PFV({flow,onBack}){
   const isSp=sel&&sS.find(s=>s.id===sel.id);
   return h("div",{id:"fullview"},
     h("div",{className:"fv-top"},
-      h("button",{className:"fv-back",onClick:onBack},h(Bk)," Volver"),
+      h("button",{className:"fv-back",onClick:onBack},h(BackSvg)," Volver"),
       h("div",{className:"fv-info"},
         h("div",{className:"fv-ttl"},ttl),
         h("div",{className:"fv-sub"},sub+" · Haz clic en cualquier etapa para ver el detalle")
@@ -304,19 +465,25 @@ function PFV({flow,onBack}){
     ),
     h("div",{className:"flow-wrap"},
       h("div",{className:"flow-scroll"},
-        h("div",{className:"row"},
-          ...stages.map((s,i)=>h("div",{key:s.id,style:{display:"flex",alignItems:"center"}},
-            h("div",{className:"sb"+(sel?.id===s.id?" on":""),style:{borderColor:sel?.id===s.id?"#3B6D11":s.kind==="complete"?"#27500A":s.kind==="source"?"#97C459":"#C0DD97"},onClick:()=>setSel(sel?.id===s.id?null:s)},
-              h("div",{className:"sb-n"},s.name),h("div",{className:"sb-s"},s.sub),h("div",{className:"sb-ai"},s.ai.length+" IA →")
+        h("div",{className:"stages-row"},
+          ...stages.map((s,i)=>[
+            h("div",{key:s.id,
+              className:"sb"+(sel?.id===s.id?" on":""),
+              onClick:()=>setSel(sel?.id===s.id?null:s)
+            },
+              h("div",{className:"sb-kind"},s.kind),
+              h("div",{className:"sb-n"},s.name),
+              h("div",{className:"sb-s"},s.sub),
+              h("div",{className:"sb-ai"},s.ai.length+" IA →")
             ),
-            i<stages.length-1&&h("div",{className:"arr-wrap"},h(ArrRight))
-          ))
+            i<stages.length-1&&h("div",{key:"a"+i,className:"arr-wrap"},h(ArrSvg))
+          ]).flat().filter(Boolean)
         ),
-        flow==="investment"&&h("div",{className:"sp-row"},
+        flow==="investment"&&h("div",{className:"sp-section"},
           h("div",{className:"sp-lbl"},"Estados especiales — pueden ocurrir desde cualquier etapa"),
-          h("div",{style:{display:"flex",gap:10,alignItems:"flex-start"}},
-            ...sS.map(s=>h("div",{key:s.id,className:"sb"+(sel?.id===s.id?" on":""),style:{borderColor:sel?.id===s.id?"#3B6D11":"#C0DD97"},onClick:()=>setSel(sel?.id===s.id?null:s)},
-              h("div",{className:"sb-n"},s.name),h("div",{className:"sb-s"},s.sub),h("div",{className:"sb-ai"},s.ai.length+" IA →")
+          h("div",{className:"sp-cards"},
+            ...sS.map(s=>h("div",{key:s.id,className:"sb"+(sel?.id===s.id?" on":""),onClick:()=>setSel(sel?.id===s.id?null:s)},
+              h("div",{className:"sb-kind"},s.kind),h("div",{className:"sb-n"},s.name),h("div",{className:"sb-s"},s.sub),h("div",{className:"sb-ai"},s.ai.length+" IA →")
             )),
             h("div",{className:"sp-note"},h("strong",null,"Hold:")," follow-up cada 3-4 meses.",h("br"),h("strong",null,"Declined:")," documentar motivo siempre. Puede reactivarse.")
           )
@@ -327,6 +494,7 @@ function PFV({flow,onBack}){
   );
 }
 
+/* Concepts Page */
 function ConceptsPage({onBack}){
   const [cs,setCs]=useState(CONCEPTS);
   const [q,setQ]=useState("");
@@ -339,51 +507,62 @@ function ConceptsPage({onBack}){
   const filtered=cs.filter(c=>(cat==="Todos"||c.cat===cat)&&(!q||c.term.toLowerCase().includes(q.toLowerCase())||c.def.toLowerCase().includes(q.toLowerCase()))).sort((a,b)=>a.term.localeCompare(b.term));
   const addC=()=>{if(!nt.trim()||!nd.trim())return;setCs(p=>[...p,{id:nid,term:nt.trim(),cat:nc,def:nd.trim()}]);setNid(n=>n+1);setNt("");setNd("");};
   return h("div",{id:"secpage"},
-    h("div",{className:"sph"},h("button",{className:"spback",onClick:onBack},h(Bk)," Volver"),h("div",{className:"sptitle"},"Conceptos útiles")),
+    h("div",{className:"sph"},h("button",{className:"spback",onClick:onBack},h(BackSvg)," Volver"),h("div",{className:"sptitle"},"Conceptos útiles")),
     h("div",{className:"spbody"},
       h("input",{className:"sinp",placeholder:"Buscar concepto o definición...",value:q,onChange:e=>setQ(e.target.value)}),
-      h("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},allCats.map(c=>h("button",{key:c,className:"ccat"+(cat===c?" on":""),onClick:()=>setCat(c)},c))),
-      h("div",{style:{fontSize:11,color:"#639922"}},filtered.length+" conceptos"),
-      h("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:10}},
+      h("div",{style:{display:"flex",gap:8,flexWrap:"wrap"}},allCats.map(c=>h("button",{key:c,className:"ccat"+(cat===c?" on":""),onClick:()=>setCat(c)},c))),
+      h("div",{style:{fontSize:12,color:"#7A9585"}},filtered.length+" conceptos"),
+      h("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:12}},
         filtered.map(c=>h("div",{key:c.id,className:"conc"},
-          h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:6}},h("div",{style:{fontSize:13,fontWeight:500,color:"#173404"}},c.term),h("button",{className:"dbtn",onClick:()=>setCs(p=>p.filter(x=>x.id!==c.id))},"×")),
+          h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8}},
+            h("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:17,color:"#1C3A2A",fontWeight:400}},c.term),
+            h("button",{className:"dbtn",onClick:()=>setCs(p=>p.filter(x=>x.id!==c.id))},"×")
+          ),
           h("span",{className:"ctag"},c.cat),
-          h("div",{style:{fontSize:11,color:"#3B6D11",lineHeight:1.6,marginTop:4}},c.def)
+          h("div",{style:{fontSize:12,color:"#4A6355",lineHeight:1.65,marginTop:5,fontWeight:300}},c.def)
         ))
       ),
-      h("div",{style:{background:"#EAF3DE",border:"1.5px solid #C0DD97",borderRadius:10,padding:"14px 16px",display:"flex",flexDirection:"column",gap:8}},
-        h("div",{className:"slbl"},"Agregar nuevo concepto"),
-        h("div",{style:{display:"flex",gap:8}},
-          h("input",{className:"ainp",style:{flex:2},placeholder:"Término (ej: ARR)",value:nt,onChange:e=>setNt(e.target.value)}),
-          h("select",{value:nc,onChange:e=>setNc(e.target.value),style:{border:"1px solid #C0DD97",borderRadius:7,padding:"6px 9px",fontSize:11,color:"#27500A",background:"#fff",outline:"none",fontFamily:"inherit"}},
-            ["Generales","SaaS","Fintech","Marketplace","Inversión","Mercado","Legal","Ecosistema","Operaciones","Logística"].map(c=>h("option",{key:c,value:c},c))
+      h("div",{style:{background:"#1C3A2A",borderRadius:14,padding:"20px 22px",display:"flex",flexDirection:"column",gap:12}},
+        h("div",{style:{fontSize:10,letterSpacing:"0.14em",textTransform:"uppercase",color:"#C9A84C",fontWeight:500,marginBottom:2}},"Agregar nuevo concepto"),
+        h("div",{style:{display:"flex",gap:10}},
+          h("input",{className:"ainp",style:{flex:2,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",color:"#F2EDE3"},placeholder:"Término (ej: ARR)",value:nt,onChange:e=>setNt(e.target.value)}),
+          h("select",{value:nc,onChange:e=>setNc(e.target.value),style:{border:"1px solid rgba(255,255,255,0.2)",borderRadius:8,padding:"8px 12px",fontSize:12,color:"#F2EDE3",background:"rgba(255,255,255,0.1)",outline:"none",fontFamily:"inherit"}},
+            ["Generales","SaaS","Fintech","Marketplace","Inversión","Mercado","Legal","Ecosistema","Operaciones","Logística"].map(c=>h("option",{key:c,value:c,style:{background:"#1C3A2A",color:"#F2EDE3"}},c))
           )
         ),
-        h("textarea",{value:nd,onChange:e=>setNd(e.target.value),placeholder:"Definición clara y concisa...",style:{border:"1px solid #C0DD97",borderRadius:7,padding:"7px 10px",fontSize:11,color:"#27500A",background:"#fff",outline:"none",resize:"vertical",minHeight:60,fontFamily:"inherit"}}),
-        h("button",{className:"abtn",style:{alignSelf:"flex-start"},onClick:addC},"+ Agregar concepto")
+        h("textarea",{value:nd,onChange:e=>setNd(e.target.value),placeholder:"Definición clara y concisa...",style:{border:"1px solid rgba(255,255,255,0.2)",borderRadius:8,padding:"9px 12px",fontSize:12,color:"#F2EDE3",background:"rgba(255,255,255,0.08)",outline:"none",resize:"vertical",minHeight:64,fontFamily:"inherit","::placeholder":{color:"rgba(242,237,227,0.4)"}}}),
+        h("button",{style:{alignSelf:"flex-start",background:"#C9A84C",color:"#1C3A2A",border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,cursor:"pointer",fontWeight:500,fontFamily:"inherit"},onClick:addC},"+ Agregar concepto")
       )
     )
   );
 }
 
+/* Tools Page */
 function ToolsPage({onBack}){
   const [open,setOpen]=useState(null);
   const cats=[...new Set(TOOLS.map(t=>t.cat))];
   return h("div",{id:"secpage"},
-    h("div",{className:"sph"},h("button",{className:"spback",onClick:onBack},h(Bk)," Volver"),h("div",{className:"sptitle"},"Herramientas del equipo")),
+    h("div",{className:"sph"},h("button",{className:"spback",onClick:onBack},h(BackSvg)," Volver"),h("div",{className:"sptitle"},"Herramientas del equipo")),
     h("div",{className:"spbody"},
-      h("div",{style:{fontSize:12,color:"#3B6D11"}},"Herramientas que usa el equipo Tantauco. Haz clic para ver más detalles."),
+      h("div",{style:{fontSize:13,color:"#4A6355",fontWeight:300}},"Herramientas que usa el equipo Tantauco. Haz clic para ver más detalles."),
       ...cats.map(cat=>h("div",{key:cat},
-        h("div",{className:"slbl",style:{marginBottom:8}},cat),
+        h("div",{className:"slbl",style:{marginBottom:10}},cat),
         TOOLS.filter(t=>t.cat===cat).map(t=>h("div",{key:t.id,className:"tcrd"+(open===t.id?" open":""),onClick:()=>setOpen(open===t.id?null:t.id)},
-          h("div",{style:{display:"flex",alignItems:"center",gap:10}},
-            h("span",{style:{fontSize:20,lineHeight:1}},t.icon),
-            h("div",{style:{flex:1}},h("div",{style:{fontSize:12,fontWeight:500,color:"#173404"}},t.name),h("div",{style:{fontSize:11,color:"#3B6D11",marginTop:1}},t.desc)),
-            h(Rv,{open:open===t.id})
+          h("div",{style:{display:"flex",alignItems:"center",gap:12}},
+            h("span",{style:{fontSize:22,lineHeight:1}},t.icon),
+            h("div",{style:{flex:1}},
+              h("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:18,color:"#1C3A2A",fontWeight:400}},t.name),
+              h("div",{style:{fontSize:12,color:"#4A6355",marginTop:2,fontWeight:300}},t.desc)
+            ),
+            h(RvSvg,{open:open===t.id})
           ),
-          open===t.id&&h("div",{style:{display:"flex",flexDirection:"column",gap:10,marginTop:10,borderTop:"1px solid #C0DD97",paddingTop:10}},
-            h("div",null,h("div",{className:"slbl"},"¿Para qué lo usamos?"),h("div",{style:{fontSize:11,color:"#173404",lineHeight:1.6}},t.uso)),
-            h("div",null,h("div",{className:"slbl"},"Funciones principales"),h("div",{style:{display:"flex",flexDirection:"column",gap:4}},t.features.map((f,i)=>h("div",{key:i,style:{display:"flex",gap:7,alignItems:"flex-start"}},h("div",{className:"dot",style:{marginTop:4}}),h("span",{style:{fontSize:11,color:"#3B6D11",lineHeight:1.5}},f)))))
+          open===t.id&&h("div",{style:{display:"flex",flexDirection:"column",gap:12,marginTop:14,borderTop:"1px solid #D5CCBB",paddingTop:14}},
+            h("div",null,h("div",{className:"slbl"},"¿Para qué lo usamos?"),h("div",{style:{fontSize:13,color:"#1C3A2A",lineHeight:1.7,fontWeight:300}},t.uso)),
+            h("div",null,h("div",{className:"slbl"},"Funciones principales"),h("div",{style:{display:"flex",flexDirection:"column",gap:5}},
+              t.features.map((f,i)=>h("div",{key:i,style:{display:"flex",gap:9,alignItems:"flex-start"}},
+                h("div",{className:"dot",style:{marginTop:5}}),h("span",{style:{fontSize:12,color:"#4A6355",lineHeight:1.55,fontWeight:300}},f)
+              ))
+            ))
           )
         ))
       ))
@@ -391,6 +570,7 @@ function ToolsPage({onBack}){
   );
 }
 
+/* Landing */
 function Landing({onNav}){
   const iPs=["Scouting","Screening","Internal Committee","Evaluación","Investment Memo","External Committee","Due Diligence","Invested"];
   const mPs=["Onboarding","Reuniones Recurrentes","Soporte Activo"];
@@ -400,7 +580,9 @@ function Landing({onNav}){
       h("div",{className:"hero-t"},"Todo lo que necesitas",h("br"),"para operar el ",h("em",null,"fondo")),
       h("div",{className:"hero-s"},"Proceso de inversión, portfolio monitoring, conceptos clave y herramientas del equipo — en un solo lugar."),
       h("div",{className:"hero-chips"},
-        h("div",{className:"chip"},"5 personas"),h("div",{className:"chip"},"2 Partners · 1 Principal · 2 Analistas"),h("div",{className:"chip"},"Pre-Seed a Serie A · LATAM")
+        h("div",{className:"chip"},"5 personas"),
+        h("div",{className:"chip"},"2 Partners · 1 Principal · 2 Analistas"),
+        h("div",{className:"chip"},"Pre-Seed a Serie A · LATAM")
       )
     ),
     h("div",{className:"main-grid"},
@@ -413,7 +595,7 @@ function Landing({onNav}){
           h("div",{className:"mc-desc"},"El proceso completo desde que identificamos una startup hasta que cerramos la inversión. 8 etapas, tareas por rol y automatizaciones pendientes."),
           h("div",{className:"mc-pills"},iPs.map(s=>h("div",{key:s,className:"mc-pill"},s)))
         ),
-        h("div",{className:"mc-arr"},h(FwArr))
+        h("div",{className:"mc-arr"},h(FwSvg))
       ),
       h("div",{className:"mc",onClick:()=>onNav("monitoring")},
         h("div",{className:"mc-bar"}),
@@ -424,7 +606,7 @@ function Landing({onNav}){
           h("div",{className:"mc-desc"},"El proceso de seguimiento activo de las startups invertidas. Onboarding, reuniones recurrentes y entrega de valor concreto al portfolio."),
           h("div",{className:"mc-pills"},mPs.map(s=>h("div",{key:s,className:"mc-pill"},s)))
         ),
-        h("div",{className:"mc-arr"},h(FwArr))
+        h("div",{className:"mc-arr"},h(FwSvg))
       )
     ),
     h("div",{className:"sec-section"},
@@ -432,17 +614,31 @@ function Landing({onNav}){
       h("div",{className:"sec-grid"},
         h("div",{className:"sc",onClick:()=>onNav("concepts")},
           h("div",{className:"sc-icon"},"📖"),
-          h("div",null,h("div",{className:"sc-t"},"Conceptos útiles"),h("div",{className:"sc-d"},"40+ términos de VC, SaaS, Fintech y Marketplace con definiciones claras. Buscador y filtros. Agrega y elimina conceptos."))
+          h("div",null,
+            h("div",{className:"sc-t"},"Conceptos útiles"),
+            h("div",{className:"sc-d"},"40+ términos de VC, SaaS, Fintech y Marketplace con definiciones claras. Buscador y filtros por categoría. Agrega y elimina conceptos.")
+          )
         ),
         h("div",{className:"sc",onClick:()=>onNav("tools")},
           h("div",{className:"sc-icon"},"🛠️"),
-          h("div",null,h("div",{className:"sc-t"},"Herramientas del equipo"),h("div",{className:"sc-d"},"Plataforma Tantauco, Harmonic, Granola, Notion, Gmail, Claude, ChatGPT y Gemini — para qué sirve cada una y cómo las usamos."))
+          h("div",null,
+            h("div",{className:"sc-t"},"Herramientas del equipo"),
+            h("div",{className:"sc-d"},"Plataforma Tantauco, Harmonic, Granola, Notion, Gmail, Claude, ChatGPT y Gemini — para qué sirve cada una y cómo las usamos.")
+          )
         )
       )
+    ),
+    h("div",{style:{background:"#1C3A2A",padding:"24px 72px",display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:"auto"}},
+      h("div",null,
+        h("span",{style:{fontFamily:"'Playfair Display',serif",fontSize:18,color:"#F2EDE3",fontWeight:400}},"Tantauco "),
+        h("span",{style:{fontFamily:"'Playfair Display',serif",fontSize:18,color:"#C9A84C",fontWeight:400,fontStyle:"italic"}},"Ventures")
+      ),
+      h("div",{style:{fontSize:12,color:"rgba(242,237,227,0.45)"}},new Date().getFullYear()+" · Santiago, Chile")
     )
   );
 }
 
+/* App */
 function App(){
   const [view,setView]=useState("landing");
   if(view==="landing") return h(Landing,{onNav:setView});
