@@ -629,6 +629,13 @@ function Landing({onNav}){
             h("div",{className:"sc-t"},"Herramientas del equipo"),
             h("div",{className:"sc-d"},"Plataforma Tantauco, Harmonic, Granola, Notion, Gmail, Claude, ChatGPT y Gemini — para qué sirve cada una y cómo las usamos.")
           )
+        ),
+        h("div",{className:"sc",style:{gridColumn:"1 / -1",borderColor:"var(--dark)",background:"var(--cream)"},onClick:()=>onNav("diagram")},
+          h("div",{className:"sc-icon",style:{background:"var(--dark)",color:"var(--gold)",fontSize:22,fontFamily:"'Playfair Display',serif"}},"◈"),
+          h("div",null,
+            h("div",{className:"sc-t",style:{color:"var(--dark)"}},"Diagrama de flujo completo"),
+            h("div",{className:"sc-d"},"Visualización expandible del proceso completo: Investment Pipeline (8 etapas) + Portfolio Monitoring (3 etapas), con decisiones, sub-tareas y caminos alternativos por etapa. Haz clic en cada nodo para desplegar.")
+          )
         )
       )
     ),
@@ -642,6 +649,548 @@ function Landing({onNav}){
   );
 }
 
+/* ═══════════════════════════════════════════════════════
+   FLOW DIAGRAM VIEW
+═══════════════════════════════════════════════════════ */
+function FlowDiagram({onBack}){
+  const [expandedNodes,setExpandedNodes]=useState({});
+  const toggle=id=>setExpandedNodes(p=>({...p,[id]:!p[id]}));
+  const exp=id=>!!expandedNodes[id];
+
+  const BOX={
+    main:{bg:"#EAF3DE",border:"#3B6D11",text:"#1C3A2A",lbl:"#27500A"},
+    teal:{bg:"#E1F5EE",border:"#0F6E56",text:"#085041",lbl:"#04342C"},
+    purple:{bg:"#EEEDFE",border:"#534AB7",text:"#26215C",lbl:"#26215C"},
+    amber:{bg:"#FAEEDA",border:"#BA7517",text:"#633806",lbl:"#633806"},
+    gray:{bg:"#F1EFE8",border:"#888780",text:"#2C2C2A",lbl:"#444441"},
+    action:{bg:"#fff",border:"#C4BAA8",text:"#1C3A2A",lbl:"#4A6355"},
+  };
+
+  const s=(...args)=>Object.assign({},...args);
+
+  /* Reusable node components */
+  function MainNode({id,label,sub,kind,color,children}){
+    const c=BOX[color]||BOX.main;
+    const isExp=exp(id);
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0}},
+      h("div",{
+        onClick:()=>toggle(id),
+        style:{background:c.bg,border:`2px solid ${c.border}`,borderRadius:12,padding:"12px 20px",
+          minWidth:220,maxWidth:260,textAlign:"center",cursor:"pointer",
+          boxShadow:isExp?"0 0 0 3px "+c.border+"40":"0 2px 8px rgba(0,0,0,0.06)",
+          transition:"all 0.15s",userSelect:"none"}},
+        h("div",{style:{fontSize:9,fontWeight:500,letterSpacing:"0.14em",textTransform:"uppercase",color:c.lbl,marginBottom:3}},kind),
+        h("div",{style:{fontSize:15,fontWeight:500,color:c.text,lineHeight:1.2}},label),
+        h("div",{style:{fontSize:11,color:c.lbl,marginTop:4,lineHeight:1.3}},sub),
+        h("div",{style:{fontSize:10,color:c.border,marginTop:6}},isExp?"▲ cerrar":"▼ expandir")
+      ),
+      isExp&&children
+    );
+  }
+
+  function ActionNode({label,color}){
+    const c=BOX[color||"action"];
+    return h("div",{style:{background:c.bg,border:`1.5px solid ${c.border}`,borderRadius:8,
+      padding:"7px 14px",fontSize:11,color:c.text,textAlign:"center",maxWidth:200,lineHeight:1.4}},label);
+  }
+
+  function DecisionNode({label}){
+    return h("div",{style:{background:"#fff",border:"1.5px solid #C4BAA8",
+      transform:"rotate(45deg)",width:70,height:70,borderRadius:6,flexShrink:0,position:"relative"}},
+      h("div",{style:{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%) rotate(-45deg)",
+        fontSize:10,color:"#1C3A2A",textAlign:"center",width:80,lineHeight:1.3,fontWeight:500}},label)
+    );
+  }
+
+  function Arrow({label,color,dashed}){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 0"}},
+      h("div",{style:{width:1.5,height:20,background:color||"#C4BAA8",
+        borderLeft:dashed?"1.5px dashed "+(color||"#888"):"1.5px solid "+(color||"#C4BAA8")}}),
+      label&&h("div",{style:{fontSize:10,color:color||"#888",fontWeight:500}}),
+      h("div",{style:{fontSize:12,color:color||"#C4BAA8",lineHeight:1}})
+    );
+  }
+
+  function HArrow({label,color,dir}){
+    return h("div",{style:{display:"flex",alignItems:"center",gap:4,padding:"0 6px"}},
+      dir!=="left"&&h("div",{style:{width:40,height:1.5,background:color||"#C4BAA8"}}),
+      label&&h("div",{style:{fontSize:10,color:color||"#888"}}),
+      dir==="left"&&h("div",{style:{width:40,height:1.5,background:color||"#C4BAA8"}})
+    );
+  }
+
+  function VConn({color,dashed,label,height}){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0}},
+      label&&h("div",{style:{fontSize:10,color:color||"#7A9585",fontWeight:500,marginBottom:2}}),
+      h("div",{style:{width:2,height:height||28,
+        background:"none",
+        borderLeft:`2px ${dashed?"dashed":"solid"} ${color||"#C4BAA8"}`}}),
+      h("div",{style:{width:0,height:0,
+        borderLeft:"5px solid transparent",borderRight:"5px solid transparent",
+        borderTop:`7px solid ${color||"#C4BAA8"}`}})
+    );
+  }
+
+  /* Sub-flow: expanded task list */
+  function TaskFlow({tasks,color}){
+    const c=BOX[color]||BOX.action;
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",marginTop:8,gap:0}},
+      tasks.map((t,i)=>h("div",{key:i,style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0}},
+        h("div",{style:{background:"#fff",border:`1.5px solid ${c.border}`,borderRadius:8,
+          padding:"8px 16px",fontSize:11,color:c.text,maxWidth:240,textAlign:"center",lineHeight:1.45,
+          boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}},
+          h("span",{style:{fontWeight:500,color:c.lbl,marginRight:4}},i+1+"."),t
+        ),
+        i<tasks.length-1&&h("div",{style:{width:2,height:16,borderLeft:"2px solid #C4BAA8"}})
+      ))
+    );
+  }
+
+  /* Lateral branch: decision → outcomes */
+  function BranchRow({decLabel,leftLabel,leftColor,rightLabel,rightColor,leftChildren,rightChildren}){
+    return h("div",{style:{display:"flex",alignItems:"flex-start",gap:0,marginTop:0}},
+      /* LEFT branch */
+      h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",width:200}},
+        h("div",{style:{display:"flex",alignItems:"center",gap:0}},
+          h("div",{style:{width:60,height:1.5,background:leftColor||"#888780"}}),
+          h("div",{style:{fontSize:9,color:leftColor||"#888780",fontWeight:500,marginRight:4}},leftLabel)
+        ),
+        leftChildren&&h("div",{style:{marginTop:4}},leftChildren)
+      ),
+      /* DIAMOND */
+      h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:4,flexShrink:0}},
+        h("div",{style:{width:2,height:20,borderLeft:"2px solid #C4BAA8"}}),
+        h(DecisionNode,{label:decLabel}),
+        h("div",{style:{width:2,height:20,borderLeft:"2px solid #3B6D11"}})
+      ),
+      /* RIGHT branch */
+      h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",width:200}},
+        h("div",{style:{display:"flex",alignItems:"center",gap:0}},
+          h("div",{style:{fontSize:9,color:rightColor||"#BA7517",fontWeight:500,marginLeft:4}},rightLabel),
+          h("div",{style:{width:60,height:1.5,background:rightColor||"#BA7517"}})
+        ),
+        rightChildren&&h("div",{style:{marginTop:4}},rightChildren)
+      )
+    );
+  }
+
+  function SectionLabel({text}){
+    return h("div",{style:{display:"flex",alignItems:"center",gap:12,margin:"16px 0 8px",width:"100%",maxWidth:700}},
+      h("div",{style:{flex:1,height:1,background:"#D5CCBB"}}),
+      h("div",{style:{fontSize:10,fontWeight:500,letterSpacing:"0.16em",textTransform:"uppercase",color:"#7A9585",whiteSpace:"nowrap"}},text),
+      h("div",{style:{flex:1,height:1,background:"#D5CCBB"}})
+    );
+  }
+
+  /* ── DECLINED sub-flow ── */
+  function DeclinedFlow(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0}},
+      h(ActionNode,{label:"Documentar motivo del decline en Plataforma Tantauco",color:"amber"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px solid #BA7517"}}),
+      h(ActionNode,{label:"Enviar email de feedback al founder (si corresponde)",color:"amber"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px solid #BA7517"}}),
+      h(ActionNode,{label:"Marcar como Declined en el pipeline",color:"amber"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px dashed #BA7517"}}),
+      h("div",{style:{background:"#FAEEDA",border:"1.5px dashed #BA7517",borderRadius:8,padding:"7px 14px",
+        fontSize:11,color:"#633806",textAlign:"center",maxWidth:200,lineHeight:1.4}},
+        "⟳ Puede reactivarse si cambian las condiciones")
+    );
+  }
+
+  /* ── HOLD sub-flow ── */
+  function HoldFlow(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0}},
+      h(ActionNode,{label:"Documentar motivo del Hold en Plataforma Tantauco",color:"gray"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px solid #888780"}}),
+      h(ActionNode,{label:"Agendar recordatorio de follow-up en 3–4 meses",color:"gray"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px solid #888780"}}),
+      h(ActionNode,{label:"Enviar email de check-in al founder cada 3–4 meses",color:"gray"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px solid #888780"}}),
+      h(ActionNode,{label:"Registrar updates recibidos en Plataforma Tantauco",color:"gray"}),
+      h("div",{style:{width:2,height:12,borderLeft:"2px dashed #888780"}}),
+      h("div",{style:{background:"#F1EFE8",border:"1.5px dashed #888780",borderRadius:8,padding:"7px 14px",
+        fontSize:11,color:"#444441",textAlign:"center",maxWidth:200,lineHeight:1.4}},
+        "⟳ Evaluar en cada check-in si se reactiva")
+    );
+  }
+
+  /* Stage-specific expanded content */
+  function ScoutingExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      /* Sub-sources */
+      h("div",{style:{display:"flex",gap:8,marginBottom:8}},
+        h(ActionNode,{label:"Harmonic · GPT mode",color:"action"}),
+        h(ActionNode,{label:"DF+ / DFmás semanal",color:"action"}),
+        h(ActionNode,{label:"Batches · YC · Platanus",color:"action"}),
+        h(ActionNode,{label:"LinkedIn · Email",color:"action"})
+      ),
+      h(VConn,{color:"#3B6D11",label:"Startup identificada"}),
+      h(ActionNode,{label:"Preparar mensaje personalizado según sector y etapa",color:"main"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Registrar en Plataforma Tantauco con fuente de origen",color:"main"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Contactar al founder (LinkedIn / email)",color:"main"}),
+      /* Decision: ¿Responde? */
+      h("div",{style:{display:"flex",alignItems:"flex-start",gap:0,marginTop:0}},
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-end",width:230}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{fontSize:10,color:"#888780",fontWeight:500,marginRight:6}},"No responde"),
+            h("div",{style:{width:50,height:1.5,background:"#888780"}})
+          ),
+          h("div",{style:{marginTop:4}},
+            h(ActionNode,{label:"Follow-up automático D+7",color:"gray"}),
+            h("div",{style:{width:2,height:10,borderLeft:"2px dashed #888780",margin:"0 auto"}}),
+            h(ActionNode,{label:"Si persiste silencio → Declined",color:"amber"})
+          )
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}},
+          h("div",{style:{width:2,height:20,borderLeft:"2px solid #C4BAA8"}}),
+          h(DecisionNode,{label:"¿Responde?"}),
+          h("div",{style:{width:2,height:16,borderLeft:"2px solid #3B6D11"}})
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-start",width:230}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{width:50,height:1.5,background:"#3B6D11"}}),
+            h("div",{style:{fontSize:10,color:"#27500A",fontWeight:500,marginLeft:6}},"Acepta reunión")
+          ),
+          h("div",{style:{marginTop:4}},
+            h(ActionNode,{label:"→ Avanza a Screening",color:"main"})
+          )
+        )
+      )
+    );
+  }
+
+  function ScreeningExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(TaskFlow,{tasks:["Confirmar reunión y enviar invite Gmail","Verificar que Granola está grabando","Completar Overview OBLIGATORIO en Plataforma Tantauco","Agregar métricas, cap table, datos adicionales","Preparar presentación breve para reunión semanal"],color:"main"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}}),
+      h("div",{style:{display:"flex",alignItems:"flex-start",gap:0}},
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-end",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{fontSize:10,color:"#888780",fontWeight:500,marginRight:6}},"Hold"),
+            h("div",{style:{width:50,height:1.5,background:"#888780",borderStyle:"dashed"}})
+          ),
+          h("div",{style:{marginTop:4}},h(HoldFlow))
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}},
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #C4BAA8"}}),
+          h(DecisionNode,{label:"Reunión semanal"}),
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}})
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-start",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{width:50,height:1.5,background:"#BA7517"}}),
+            h("div",{style:{fontSize:10,color:"#BA7517",fontWeight:500,marginLeft:6}},"Rechazada")
+          ),
+          h("div",{style:{marginTop:4}},h(DeclinedFlow))
+        )
+      ),
+      h("div",{style:{fontSize:10,color:"#3B6D11",fontWeight:500,marginTop:4,marginBottom:2}},"Aprobada"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}})
+    );
+  }
+
+  function ICExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(ActionNode,{label:"Email al founder expresando interés + solicitar Data Room",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Analizar puntos específicos de interés del Screening",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Revisar Data Room o info adicional recibida",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Análisis de mercado TAM/SAM/SOM",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Investigar equipo fundador: LinkedIn · Harmonic · referencias",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Preparar análisis mayor en Plataforma Tantauco",color:"main"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}}),
+      h("div",{style:{display:"flex",alignItems:"flex-start",gap:0}},
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-end",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{fontSize:10,color:"#888780",fontWeight:500,marginRight:6}},"Hold"),
+            h("div",{style:{width:50,height:1.5,background:"#888780"}})
+          ),
+          h("div",{style:{marginTop:4}},h(HoldFlow))
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}},
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #C4BAA8"}}),
+          h(DecisionNode,{label:"¿Avanzar?"}),
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}})
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-start",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{width:50,height:1.5,background:"#BA7517"}}),
+            h("div",{style:{fontSize:10,color:"#BA7517",fontWeight:500,marginLeft:6}},"Declinar")
+          ),
+          h("div",{style:{marginTop:4}},h(DeclinedFlow))
+        )
+      ),
+      h("div",{style:{fontSize:10,color:"#3B6D11",fontWeight:500,marginTop:4,marginBottom:2}},"Partners solicitan 2da reunión"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}})
+    );
+  }
+
+  function EvalExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(ActionNode,{label:"Agendar 2da reunión (Partner + Analyst)",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Realizar 2da reunión · Granola grabando",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Enviar Q&A al founder post-reunión",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Revisar Data Room completo y respuestas del Q&A",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Buscar referencias del equipo fundador",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Buscar referencias del producto con clientes reales",color:"main"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #3B6D11"}}),
+      h(ActionNode,{label:"Probar el producto directamente cuando sea posible",color:"main"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}}),
+      h("div",{style:{display:"flex",alignItems:"flex-start",gap:0}},
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-end",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{fontSize:10,color:"#888780",fontWeight:500,marginRight:6}},"Hold"),
+            h("div",{style:{width:50,height:1.5,background:"#888780"}})
+          ),
+          h("div",{style:{marginTop:4}},h(HoldFlow))
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}},
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #C4BAA8"}}),
+          h(DecisionNode,{label:"¿Atractiva?"}),
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}})
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-start",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{width:50,height:1.5,background:"#BA7517"}}),
+            h("div",{style:{fontSize:10,color:"#BA7517",fontWeight:500,marginLeft:6}},"No convenció")
+          ),
+          h("div",{style:{marginTop:4}},h(DeclinedFlow))
+        )
+      ),
+      h("div",{style:{fontSize:10,color:"#3B6D11",fontWeight:500,marginTop:4,marginBottom:2}},"Partner indica armar Memo"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #3B6D11"}})
+    );
+  }
+
+  function MemoExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(TaskFlow,{tasks:["Revisar memos anteriores en Notion como referencia","Reunir insumos: transcripciones Granola · Data Room · Q&A","Redactar memo en Notion siguiendo el template estándar","Asegurar narrativa clara y hilo conductor","Enviar borrador al Partner asignado para revisión","Incorporar correcciones y observaciones del Partner"],color:"teal"}),
+      h("div",{style:{fontSize:10,color:"#0F6E56",fontWeight:500,marginTop:8,marginBottom:2}},"Memo aprobado por el Partner"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}})
+    );
+  }
+
+  function ECExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(ActionNode,{label:"Partner identifica y confirma expertos del sector",color:"teal"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #0F6E56"}}),
+      h(ActionNode,{label:"Partner envía Investment Memo a todos los miembros",color:"teal"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #0F6E56"}}),
+      h(ActionNode,{label:"Partner prepara presentación ejecutiva del deal",color:"teal"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #0F6E56"}}),
+      h(ActionNode,{label:"External Committee realizado (analista NO participa)",color:"teal"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}}),
+      h("div",{style:{display:"flex",alignItems:"flex-start",gap:0}},
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-start",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{width:50,height:1.5,background:"#BA7517"}}),
+            h("div",{style:{fontSize:10,color:"#BA7517",fontWeight:500,marginLeft:6}},"Rechazado")
+          ),
+          h("div",{style:{marginTop:4}},h(DeclinedFlow))
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}},
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #C4BAA8"}}),
+          h(DecisionNode,{label:"¿Aprobado?"}),
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}})
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-end",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{fontSize:10,color:"#0F6E56",fontWeight:500,marginRight:6}},"Aprobado"),
+            h("div",{style:{width:50,height:1.5,background:"#0F6E56"}})
+          )
+        )
+      ),
+      h("div",{style:{fontSize:10,color:"#0F6E56",fontWeight:500,marginTop:4,marginBottom:2}},"→ Due Diligence Legal"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}})
+    );
+  }
+
+  function DDExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(ActionNode,{label:"Contratar o coordinar abogados externos",color:"teal"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #0F6E56"}}),
+      h(ActionNode,{label:"Compartir Data Room con los abogados",color:"teal"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #0F6E56"}}),
+      h(ActionNode,{label:"Seguimiento al avance de la DD",color:"teal"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #0F6E56"}}),
+      h("div",{style:{display:"flex",gap:6,marginBottom:2}},
+        h("div",{style:{background:"#E1F5EE",border:"1px solid #0F6E56",borderRadius:7,padding:"5px 10px",fontSize:10,color:"#085041",lineHeight:1.3}},"Corporativo · cap table"),
+        h("div",{style:{background:"#E1F5EE",border:"1px solid #0F6E56",borderRadius:7,padding:"5px 10px",fontSize:10,color:"#085041",lineHeight:1.3}},"IP · contratos"),
+        h("div",{style:{background:"#E1F5EE",border:"1px solid #0F6E56",borderRadius:7,padding:"5px 10px",fontSize:10,color:"#085041",lineHeight:1.3}},"Litigios · regulatorio")
+      ),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}}),
+      h("div",{style:{display:"flex",alignItems:"flex-start",gap:0}},
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-end",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{fontSize:10,color:"#BA7517",fontWeight:500,marginRight:6}},"Red flag bloqueante"),
+            h("div",{style:{width:50,height:1.5,background:"#BA7517"}})
+          ),
+          h("div",{style:{marginTop:4}},h(DeclinedFlow))
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}},
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #C4BAA8"}}),
+          h(DecisionNode,{label:"¿Red flags?"}),
+          h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}})
+        ),
+        h("div",{style:{display:"flex",flexDirection:"column",alignItems:"flex-start",width:220}},
+          h("div",{style:{display:"flex",alignItems:"center"}},
+            h("div",{style:{width:50,height:1.5,background:"#0F6E56"}}),
+            h("div",{style:{fontSize:10,color:"#0F6E56",fontWeight:500,marginLeft:6}},"Sin issues")
+          )
+        )
+      ),
+      h("div",{style:{fontSize:10,color:"#0F6E56",fontWeight:500,marginTop:4,marginBottom:2}},"→ Cierre formal"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #0F6E56"}})
+    );
+  }
+
+  function InvestedExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(TaskFlow,{tasks:["Firma de documentos de cierre (SHA · SPA u otros)","Transferencia de fondos confirmada","Actualizar Plataforma Tantauco a estado Invested con todos los datos","Armar mini-memo resumen de la inversión para enviar a LPs","LPs notificados por los Partners","Iniciar proceso de Portfolio Monitoring (onboarding)"],color:"teal"}),
+      h("div",{style:{fontSize:10,color:"#0F6E56",fontWeight:500,marginTop:8,marginBottom:2}},"→ Portfolio Monitoring"),
+      h("div",{style:{width:2,height:14,borderLeft:"2px dashed #534AB7"}})
+    );
+  }
+
+  function OnboardingExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(TaskFlow,{tasks:["Confirmar asignación equipo: Partner G + Analyst L","Categorización inicial: tier · cercanía · áreas de valor · necesidades","Enviar onboarding email + Founder form + Quarterly form","Realizar kick-off meeting con Granola activo","Estructurar insights del kick-off en Plataforma Tantauco","Agendar reuniones recurrentes con cadencia acordada"],color:"purple"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #534AB7"}})
+    );
+  }
+
+  function RecurrenteExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h(ActionNode,{label:"Preparar reunión: revisar notas previas + métricas del período",color:"purple"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #534AB7"}}),
+      h(ActionNode,{label:"Realizar reunión con Partner · verificar Granola grabando",color:"purple"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #534AB7"}}),
+      h("div",{style:{display:"flex",gap:6,marginBottom:2}},
+        h("div",{style:{background:"#EEEDFE",border:"1px solid #534AB7",borderRadius:7,padding:"5px 10px",fontSize:10,color:"#26215C",lineHeight:1.3}},"ARR · MRR"),
+        h("div",{style:{background:"#EEEDFE",border:"1px solid #534AB7",borderRadius:7,padding:"5px 10px",fontSize:10,color:"#26215C",lineHeight:1.3}},"Churn · runway"),
+        h("div",{style:{background:"#EEEDFE",border:"1px solid #534AB7",borderRadius:7,padding:"5px 10px",fontSize:10,color:"#26215C",lineHeight:1.3}},"Blockers · fundraising")
+      ),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #534AB7"}}),
+      h(ActionNode,{label:"Extraer insights de transcripción Granola post-reunión",color:"purple"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #534AB7"}}),
+      h(ActionNode,{label:"Actualizar Plataforma Tantauco: métricas · notas · próximos pasos",color:"purple"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px solid #534AB7"}}),
+      h(ActionNode,{label:"Quarterly form enviado automáticamente cada trimestre",color:"purple"}),
+      h("div",{style:{width:2,height:14,borderLeft:"2px solid #534AB7"}})
+    );
+  }
+
+  function SoporteExpanded(){
+    return h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:0,marginTop:6}},
+      h("div",{style:{display:"flex",flexWrap:"wrap",gap:6,justifyContent:"center",marginBottom:8}},
+        ...[
+          {t:"Track 1 · Estrategia",d:"Fundraising · deck · Data Room · expansión regional"},
+          {t:"Track 2 · Intros a inversores",d:"BBDD fondos → intros cuando la startup levanta ronda"},
+          {t:"Track 3 · Intros B2B",d:"Conexiones con clientes o socios de la red Tantauco"},
+          {t:"Track 4 · Perks",d:"Créditos Anthropic · tokens · descuentos con proveedores"},
+          {t:"Track 5 · Comunidad",d:"Grupo WhatsApp activo · mensajes regulares de valor"},
+        ].map(tr=>h("div",{key:tr.t,style:{background:"#EEEDFE",border:"1.5px solid #534AB7",borderRadius:9,padding:"8px 12px",maxWidth:200,textAlign:"center"}},
+          h("div",{style:{fontSize:11,fontWeight:500,color:"#26215C",marginBottom:3}},tr.t),
+          h("div",{style:{fontSize:10,color:"#534AB7",lineHeight:1.4}},tr.d)
+        ))
+      ),
+      h(ActionNode,{label:"Registrar todas las intros y su resultado en Plataforma Tantauco",color:"purple"}),
+      h("div",{style:{width:2,height:10,borderLeft:"2px dashed #534AB7"}}),
+      h("div",{style:{background:"#EEEDFE",border:"1.5px dashed #534AB7",borderRadius:8,padding:"7px 14px",
+        fontSize:11,color:"#26215C",textAlign:"center",maxWidth:220,lineHeight:1.4}},
+        "⟳ Ciclo continuo ↔ Reuniones Recurrentes")
+    );
+  }
+
+  const connGreen={color:"#3B6D11",height:32};
+  const connTeal={color:"#0F6E56",height:32};
+  const connPurple={color:"#534AB7",height:32};
+
+  return h("div",{id:"fullview"},
+    h("div",{className:"fv-top"},
+      h("button",{className:"fv-back",onClick:onBack},h(BackSvg)," Volver"),
+      h("div",{className:"fv-info"},
+        h("div",{className:"fv-ttl"},"Diagrama de flujo completo"),
+        h("div",{className:"fv-sub"},"Haz clic en cada etapa para expandir el detalle · Investment Pipeline + Portfolio Monitoring")
+      )
+    ),
+    h("div",{style:{flex:1,overflowY:"auto",overflowX:"auto",padding:"28px 0",background:"var(--cream)"}},
+      h("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",minWidth:700,padding:"0 40px 60px"}},
+
+        h(SectionLabel,{text:"Investment Pipeline · 8 etapas"}),
+
+        /* 1. SCOUTING */
+        h(MainNode,{id:"scouting",label:"1 · Scouting",sub:"Startups a contactar",kind:"Etapa 1 · Fuente",color:"main"},
+          h(ScoutingExpanded)),
+        h(VConn,connGreen),
+
+        /* 2. SCREENING */
+        h(MainNode,{id:"screening",label:"2 · Screening",sub:"Primera reunión realizada",kind:"Etapa 2 · Estado",color:"main"},
+          h(ScreeningExpanded)),
+        h(VConn,connGreen),
+
+        /* 3. INTERNAL COMMITTEE */
+        h(MainNode,{id:"ic",label:"3 · Internal Committee",sub:"Análisis mayor + Data Room",kind:"Etapa 3 · Estado",color:"main"},
+          h(ICExpanded)),
+        h(VConn,connGreen),
+
+        /* 4. EVALUACIÓN */
+        h(MainNode,{id:"eval",label:"4 · Evaluación",sub:"Segunda reunión · dupla asignada",kind:"Etapa 4 · Estado",color:"main"},
+          h(EvalExpanded)),
+        h(VConn,connGreen),
+
+        /* 5. INVESTMENT MEMO */
+        h(MainNode,{id:"memo",label:"5 · Investment Memo",sub:"Analista redacta en Notion",kind:"Etapa 5 · Acción",color:"teal"},
+          h(MemoExpanded)),
+        h(VConn,connTeal),
+
+        /* 6. EXTERNAL COMMITTEE */
+        h(MainNode,{id:"ec",label:"6 · External Committee",sub:"Comité externo · decisión final",kind:"Etapa 6 · Estado",color:"teal"},
+          h(ECExpanded)),
+        h(VConn,connTeal),
+
+        /* 7. DUE DILIGENCE */
+        h(MainNode,{id:"dd",label:"7 · Due Diligence Legal",sub:"Partner + abogados externos",kind:"Etapa 7 · Acción",color:"teal"},
+          h(DDExpanded)),
+        h(VConn,connTeal),
+
+        /* 8. INVESTED */
+        h(MainNode,{id:"invested",label:"8 · Invested",sub:"Cierre formal + mini-memo LPs",kind:"Etapa 8 · Completado",color:"teal"},
+          h(InvestedExpanded)),
+        h(VConn,{color:"#534AB7",height:40,dashed:true,label:"→ Portfolio Monitoring"}),
+
+        h(SectionLabel,{text:"Portfolio Monitoring · 3 etapas"}),
+
+        /* M1. ONBOARDING */
+        h(MainNode,{id:"m_onb",label:"M1 · Onboarding",sub:"Bienvenida + categorización inicial",kind:"Monitoring 1",color:"purple"},
+          h(OnboardingExpanded)),
+        h(VConn,connPurple),
+
+        /* M2. REUNIONES RECURRENTES */
+        h(MainNode,{id:"m_rec",label:"M2 · Reuniones Recurrentes",sub:"Mensual + Quarterly form trimestral",kind:"Monitoring 2",color:"purple"},
+          h(RecurrenteExpanded)),
+        h(VConn,connPurple),
+
+        /* M3. SOPORTE ACTIVO */
+        h(MainNode,{id:"m_sop",label:"M3 · Soporte Activo",sub:"5 tracks de valor al portfolio",kind:"Monitoring 3",color:"purple"},
+          h(SoporteExpanded))
+      )
+    )
+  );
+}
+
+
 /* App */
 function App(){
   const [view,setView]=useState("landing");
@@ -650,6 +1199,7 @@ function App(){
   if(view==="monitoring") return h(PFV,{flow:"monitoring",onBack:()=>setView("landing")});
   if(view==="concepts") return h(ConceptsPage,{onBack:()=>setView("landing")});
   if(view==="tools") return h(ToolsPage,{onBack:()=>setView("landing")});
+  if(view==="diagram") return h(FlowDiagram,{onBack:()=>setView("landing")});
   return null;
 }
 
